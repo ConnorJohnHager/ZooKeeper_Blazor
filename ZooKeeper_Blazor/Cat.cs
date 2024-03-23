@@ -21,7 +21,7 @@ namespace ZooKeeper_Blazor
 
         public void TaskProcess() // Priority is to flee over hunt
         {
-            TaskCheck = (this as IPrey).Flee(this, location.x, location.y, "raptor");
+            TaskCheck = (this as IPrey).Flee(this, location.x, location.y, "raptor", 2);
             if (TaskCheck == false)
             {
                 TaskCheck = (this as IPredator).Hunt(this, location.x, location.y, "mouse");

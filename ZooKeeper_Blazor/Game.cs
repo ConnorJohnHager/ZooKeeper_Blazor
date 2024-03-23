@@ -128,26 +128,26 @@ namespace ZooKeeper_Blazor
             }
         }
 
-        static public bool Seek(int x, int y, Direction d, string target)
+        static public bool Seek(int x, int y, Direction d, string target, int distance)
         {
             if (target == "null") // Searching for an empty spot
             {
                 switch (d)
                 {
                     case Direction.up:
-                        y--;
+                        y = y - distance;
                         break;
                     case Direction.down:
-                        y++;
+                        y = y + distance;
                         break;
                     case Direction.left:
-                        x--;
+                        x = x - distance;
                         break;
                     case Direction.right:
-                        x++;
+                        x = x + distance;
                         break;
                 }
-                if (y < 0 || x < 0 || y > numCellsY - 1 || x > numCellsX - 1) return false;
+                if (y < 0 || x < 0 || y > numCellsY - distance || x > numCellsX - distance) return false;
                 if (animalZones[y][x].occupant == null) return true;
             }
             else
@@ -155,6 +155,39 @@ namespace ZooKeeper_Blazor
                 switch (d)
                 {
                     case Direction.up:
+                        y = y - distance;
+                        break;
+                    case Direction.down:
+                        y = y + distance;
+                        break;
+                    case Direction.left:
+                        x = x - distance;
+                        break;
+                    case Direction.right:
+                        x = x + distance;
+                        break;
+                }
+                if (y < 0 || x < 0 || y > numCellsY - distance || x > numCellsX - distance) return false;
+                if (animalZones[y][x].occupant == null) return false;
+                if (animalZones[y][x].occupant.species == target)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        static public int Move(Animal animal, Direction d, int distance)
+        {
+            int movedDistance = 0;
+            int x = animal.location.x;
+            int y = animal.location.y;
+
+            for (int i = 0; i < distance; i++)
+            {
+                switch (d)
+                {
+                    case Direction.up:
                         y--;
                         break;
                     case Direction.down:
@@ -167,14 +200,19 @@ namespace ZooKeeper_Blazor
                         x++;
                         break;
                 }
-                if (y < 0 || x < 0 || y > numCellsY - 1 || x > numCellsX - 1) return false;
-                if (animalZones[y][x].occupant == null) return false;
-                if (animalZones[y][x].occupant.species == target)
+                if (y < 0 || x < 0 || y > numCellsY - 1 || x > numCellsX - 1) break;
+                if (animalZones[y][x].occupant == null)
                 {
-                    return true;
+                    animalZones[animal.location.y][animal.location.x].occupant = null;
+                    animalZones[y][x].occupant = animal;
+                    movedDistance++;
+                }
+                else
+                {
+                    break;
                 }
             }
-            return false;
+            return movedDistance;
         }
 
         static public bool Attack(Animal attacker, Direction d)
@@ -221,7 +259,7 @@ namespace ZooKeeper_Blazor
             return false; // nothing to hunt
         }
 
-        static public bool Retreat(Animal runner, Direction d)
+        static public bool Retreat(Animal runner, Direction d, int distance)
         {
             Console.WriteLine($"{runner.name} is retreating {d.ToString()}");
             int x = runner.location.x;
@@ -230,33 +268,33 @@ namespace ZooKeeper_Blazor
             switch (d)
             {
                 case Direction.up:
-                    if (y > 0 && animalZones[y - 1][x].occupant == null)
+                    if (y > 0 && animalZones[y - distance][x].occupant == null)
                     {
-                        animalZones[y - 1][x].occupant = runner;
+                        animalZones[y - distance][x].occupant = runner;
                         animalZones[y][x].occupant = null;
                         return true; // retreat was successful
                     }
                     return false; // retreat was not successful
                 case Direction.down:
-                    if (y < numCellsY - 1 && animalZones[y + 1][x].occupant == null)
+                    if (y < numCellsY && animalZones[y + distance][x].occupant == null)
                     {
-                        animalZones[y + 1][x].occupant = runner;
+                        animalZones[y + distance][x].occupant = runner;
                         animalZones[y][x].occupant = null;
                         return true; // retreat was successful
                     }
                     return false;
                 case Direction.left:
-                    if (x > 0 && animalZones[y][x - 1].occupant == null)
+                    if (x > 0 && animalZones[y][x - distance].occupant == null)
                     {
-                        animalZones[y][x - 1].occupant = runner;
+                        animalZones[y][x - distance].occupant = runner;
                         animalZones[y][x].occupant = null;
                         return true; // retreat was successful
                     }
                     return false;
                 case Direction.right:
-                    if (x < numCellsX - 1 && animalZones[y][x + 1].occupant == null)
+                    if (x < numCellsX && animalZones[y][x + distance].occupant == null)
                     {
-                        animalZones[y][x + 1].occupant = runner;
+                        animalZones[y][x + distance].occupant = runner;
                         animalZones[y][x].occupant = null;
                         return true; // retreat was successful
                     }
