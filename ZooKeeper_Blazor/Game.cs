@@ -147,7 +147,7 @@ namespace ZooKeeper_Blazor
                         x = x + distance;
                         break;
                 }
-                if (y < 0 || x < 0 || y > numCellsY - distance || x > numCellsX - distance) return false;
+                if (y < 0 || x < 0 || y > numCellsY - 1 || x > numCellsX - 1) return false;
                 if (animalZones[y][x].occupant == null) return true;
             }
             else
@@ -167,7 +167,7 @@ namespace ZooKeeper_Blazor
                         x = x + distance;
                         break;
                 }
-                if (y < 0 || x < 0 || y > numCellsY - distance || x > numCellsX - distance) return false;
+                if (y < 0 || x < 0 || y > numCellsY - 1 || x > numCellsX - 1) return false;
                 if (animalZones[y][x].occupant == null) return false;
                 if (animalZones[y][x].occupant.species == target)
                 {
