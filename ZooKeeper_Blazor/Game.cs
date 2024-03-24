@@ -15,6 +15,7 @@ namespace ZooKeeper_Blazor
 
         static public List<List<Zone>> animalZones = new List<List<Zone>>();
         static public Zone holdingPen = new Zone(-1, -1, null);
+        static public int totalScore = 0;
 
         static public void SetUpGame()
         {
@@ -56,6 +57,7 @@ namespace ZooKeeper_Blazor
 
         static public void ZoneClick(Zone clickedZone)
         {
+            ScoreCalculator scoreCalculator = new ScoreCalculator();
             Console.Write("Got animal ");
             Console.WriteLine(clickedZone.emoji == "" ? "none" : clickedZone.emoji);
             Console.Write("Held animal is ");
@@ -70,6 +72,7 @@ namespace ZooKeeper_Blazor
                 holdingPen.occupant.location.y = -1;
                 clickedZone.occupant = null;
                 ActivateAnimals();
+                totalScore = scoreCalculator.CalculateTotalScore(animalZones);
             }
             else if (holdingPen.occupant != null && clickedZone.occupant == null)
             {
@@ -80,6 +83,7 @@ namespace ZooKeeper_Blazor
                 holdingPen.occupant = null;
                 Console.WriteLine("Empty spot now holds: " + clickedZone.emoji);
                 ActivateAnimals();
+                totalScore = scoreCalculator.CalculateTotalScore(animalZones);
             }
             else if (holdingPen.occupant != null && clickedZone.occupant != null)
             {
