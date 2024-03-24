@@ -114,9 +114,9 @@ namespace ZooKeeper_Blazor
                     for (var x = 0; x < numCellsX; x++)
                     {
                         var zone = animalZones[y][x];
-                        if (zone.occupant != null && zone.occupant.reactionTime == r && zone.occupant.TurnCheck == false)
+                        if (zone.occupant != null && ((Animal)zone.occupant).reactionTime == r && ((Animal)zone.occupant).TurnCheck == false)
                         {
-                            zone.occupant.Activate();
+                            ((Animal)zone.occupant).Activate();
                         }
                     }
                 }
@@ -128,7 +128,7 @@ namespace ZooKeeper_Blazor
                     var zone = animalZones[y][x];
                     if (zone.occupant != null)
                     {
-                        zone.occupant.TurnCheck = false;
+                        ((Animal)zone.occupant).TurnCheck = false;
                     }
                 }
             }
