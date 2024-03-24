@@ -10,8 +10,8 @@ namespace ZooKeeper_Blazor
         static public int numCellsY = 4;
 
         //Changing to public because ZoneManager needs these propeties
-        static public int maxCellsX = 8;
-        static public int maxCellsY = 8;
+        static public int maxCellsX = 10;
+        static public int maxCellsY = 10;
 
 
         static public List<List<Zone>> animalZones = new List<List<Zone>>();
