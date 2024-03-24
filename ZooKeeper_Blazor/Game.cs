@@ -9,16 +9,23 @@ namespace ZooKeeper_Blazor
         static public int numCellsX = 4;
         static public int numCellsY = 4;
 
-        static private int maxCellsX = 10;
-        static private int maxCellsY = 10;
+        //Changing to public because ZoneManager needs these propeties
+        static public int maxCellsX = 8;
+        static public int maxCellsY = 8;
 
 
         static public List<List<Zone>> animalZones = new List<List<Zone>>();
         static public Zone holdingPen = new Zone(-1, -1, null);
         static public int totalScore = 0;
 
+        //New attributes, which will be used by ZoneManager
+        static public int directionIndex;
+        static public string direction;
+
+
         static public void SetUpGame()
         {
+            ZoneManager zoneManager = new ZoneManager();
             for (var y = 0; y < numCellsY; y++)
             {
                 List<Zone> rowList = new List<Zone>();
@@ -26,38 +33,16 @@ namespace ZooKeeper_Blazor
                 for (var x = 0; x < numCellsX; x++) rowList.Add(new Zone(x, y, null));
                 animalZones.Add(rowList);
             }
+            //At the beginning of the game create a random direction
+            direction = zoneManager.CreateRandomDirection();
         }
 
-        static public void AddZones(Direction d)
-        {
-            if (d == Direction.down || d == Direction.up)
-            {
-                if (numCellsY >= maxCellsY) return; // hit maximum height!
-                List<Zone> rowList = new List<Zone>();
-                for (var x = 0; x < numCellsX; x++)
-                {
-                    rowList.Add(new Zone(x, numCellsY, null));
-                }
-                numCellsY++;
-                if (d == Direction.down) animalZones.Add(rowList);
-                // if (d == Direction.up) animalZones.Insert(0, rowList);
-            }
-            else // must be left or right...
-            {
-                if (numCellsX >= maxCellsX) return; // hit maximum width!
-                for (var y = 0; y < numCellsY; y++)
-                {
-                    var rowList = animalZones[y];
-                    // if (d == Direction.left) rowList.Insert(0, new Zone(null));
-                    if (d == Direction.right) rowList.Add(new Zone(numCellsX, y, null));
-                }
-                numCellsX++;
-            }
-        }
+       //Since there is no need to add zones manually, so addzone will be deleted
 
         static public void ZoneClick(Zone clickedZone)
         {
             ScoreCalculator scoreCalculator = new ScoreCalculator();
+            ZoneManager zoneManager = new ZoneManager();
             Console.Write("Got animal ");
             Console.WriteLine(clickedZone.emoji == "" ? "none" : clickedZone.emoji);
             Console.Write("Held animal is ");
@@ -73,6 +58,13 @@ namespace ZooKeeper_Blazor
                 clickedZone.occupant = null;
                 ActivateAnimals();
                 totalScore = scoreCalculator.CalculateTotalScore(animalZones);
+
+                zoneManager.AddZoneWhenFull();//Adding new zone should be excute after all animals finished their actions
+                if (zoneManager.IsWin())
+                {
+                    Console.WriteLine("Player reached the goal");
+                    return;
+                }
             }
             else if (holdingPen.occupant != null && clickedZone.occupant == null)
             {
@@ -84,6 +76,13 @@ namespace ZooKeeper_Blazor
                 Console.WriteLine("Empty spot now holds: " + clickedZone.emoji);
                 ActivateAnimals();
                 totalScore = scoreCalculator.CalculateTotalScore(animalZones);
+
+                zoneManager.AddZoneWhenFull();//Adding new zone should be excute after all animals finished their actions
+                if (zoneManager.IsWin())
+                {
+                    Console.WriteLine("Player reached the goal");
+                    return;
+                }
             }
             else if (holdingPen.occupant != null && clickedZone.occupant != null)
             {
@@ -94,6 +93,7 @@ namespace ZooKeeper_Blazor
 
         static public void AddAnimalToHolding(string animalType)
         {
+            ZoneManager zoneManager = new ZoneManager();
             if (holdingPen.occupant != null) return;
             if (animalType == "cat") holdingPen.occupant = new Cat("Fluffy");
             if (animalType == "mouse") holdingPen.occupant = new Mouse("Squeaky");
@@ -101,6 +101,7 @@ namespace ZooKeeper_Blazor
             if (animalType == "chick") holdingPen.occupant = new Chick("Tweety (uncopyrighted)");
             Console.WriteLine($"Holding pen occupant at {holdingPen.occupant.location.x},{holdingPen.occupant.location.y}");
             ActivateAnimals();
+            zoneManager.AddZoneWhenFull();//Keeping watching whether current is full and then adding new zone
         }
 
         static public void ActivateAnimals()

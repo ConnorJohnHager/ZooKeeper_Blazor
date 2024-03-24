@@ -24,10 +24,10 @@ namespace ZooKeeper_Blazor
             TaskCheck = (this as IPrey).Flee(this, location.x, location.y, "raptor");
             if (TaskCheck == false)
             {
-                TaskCheck = (this as IPredator).Hunt(this, location.x, location.y, "mouse");
+                //TaskCheck = (this as IPredator).Hunt(this, location.x, location.y, "mouse");
                 if (TaskCheck == false)
                 {
-                    TaskCheck = (this as IPredator).Hunt(this, location.x, location.y, "chick");
+                    //TaskCheck = (this as IPredator).Hunt(this, location.x, location.y, "chick");
                 }
             }
             TurnCheck = true;
