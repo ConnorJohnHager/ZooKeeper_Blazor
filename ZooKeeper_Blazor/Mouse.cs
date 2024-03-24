@@ -2,7 +2,7 @@
 
 namespace ZooKeeper_Blazor
 {
-    public class Mouse : Animal, IPrey
+    public class Mouse : Animal, IPrey, IPredator
     {
         public Mouse(string name)
         {
@@ -28,6 +28,10 @@ namespace ZooKeeper_Blazor
             if (TaskCheck == false)
             {
                 TaskCheck = (this as IPrey).Flee(this, location.x, location.y, "cat", 2);
+                if (TaskCheck == false)
+                {
+                    TaskCheck = (this as IPredator).Hunt(this, location.x, location.y, "grass");
+                }
             }
             TurnCheck = true;
         }

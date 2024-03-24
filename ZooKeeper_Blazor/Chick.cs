@@ -2,7 +2,7 @@
 
 namespace ZooKeeper_Blazor
 {
-	public class Chick : Bird, IPrey
+	public class Chick : Bird, IPrey, IPredator 
 	{
         public Chick(string name)
         {
@@ -22,6 +22,10 @@ namespace ZooKeeper_Blazor
         public void TaskProcess()
         {
             TaskCheck = (this as IPrey).Flee(this, location.x, location.y, "cat", 1);
+            if (TaskCheck == false)
+            {
+                TaskCheck = (this as IPredator).Hunt(this, location.x, location.y, "grass");
+            }
             TurnCheck = true;
         }
     }

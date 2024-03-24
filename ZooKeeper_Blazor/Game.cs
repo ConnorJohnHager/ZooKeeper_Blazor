@@ -91,14 +91,15 @@ namespace ZooKeeper_Blazor
             }
         }
 
-        static public void AddAnimalToHolding(string animalType)
+        static public void AddToHolding(string occupantType)
         {
             ZoneManager zoneManager = new ZoneManager();
             if (holdingPen.occupant != null) return;
-            if (animalType == "cat") holdingPen.occupant = new Cat("Fluffy");
-            if (animalType == "mouse") holdingPen.occupant = new Mouse("Squeaky");
-            if (animalType == "raptor") holdingPen.occupant = new Raptor("Chance the Raptor");
-            if (animalType == "chick") holdingPen.occupant = new Chick("Tweety (uncopyrighted)");
+            if (occupantType == "cat") holdingPen.occupant = new Cat("Fluffy");
+            if (occupantType == "mouse") holdingPen.occupant = new Mouse("Squeaky");
+            if (occupantType == "raptor") holdingPen.occupant = new Raptor("Chance the Raptor");
+            if (occupantType == "chick") holdingPen.occupant = new Chick("Tweety (uncopyrighted)");
+            if (occupantType == "grass") holdingPen.occupant = new Grass();
             Console.WriteLine($"Holding pen occupant at {holdingPen.occupant.location.x},{holdingPen.occupant.location.y}");
             ActivateAnimals();
             zoneManager.AddZoneWhenFull();//Keeping watching whether current is full and then adding new zone
