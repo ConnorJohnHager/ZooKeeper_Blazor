@@ -27,7 +27,7 @@ namespace ZooKeeper_Blazor
             // here instead of other things
         }
 
-        public void TaskProcess()
+        public void TaskProcess() //To update
         {
             TaskCheck = (this as IPrey).Flee(this, location.x, location.y, "raptor", 2);
             if (TaskCheck == false)
@@ -35,6 +35,86 @@ namespace ZooKeeper_Blazor
                 TaskCheck = (this as IPrey).Flee(this, location.x, location.y, "cat", 2);
             }
             TurnCheck = true;
+        }
+
+        public Direction Flee(int x, int y, string predator)
+        {
+            Random random = new Random();
+            List<Direction> possibleDirections = new List<Direction> { Direction.up, Direction.down, Direction.left, Direction.right };
+            int predators = 0;
+
+            if (Game.SeekForMouse(x, y, Direction.up, predator, 1) > 0)
+            {
+                possibleDirections.Remove(Direction.up);
+                predators++;
+            }
+            if (Game.SeekForMouse(x, y, Direction.down, predator, 1) > 0)
+            {
+                possibleDirections.Remove(Direction.down);
+                predators++;
+            }
+            if (Game.SeekForMouse(x, y, Direction.left, predator, 1) > 0)
+            {
+                possibleDirections.Remove(Direction.left);
+                predators++;
+            }
+            if (Game.SeekForMouse(x, y, Direction.right, predator, 1) > 0)
+            {
+                possibleDirections.Remove(Direction.right);
+                predators++;
+            }
+
+            if (possibleDirections.Count > 0 && predators > 0)
+            {
+                Direction moveDirection = possibleDirections[random.Next(possibleDirections.Count)];
+                return moveDirection;
+            }
+            else
+            {
+                return Direction.stay;
+            }
+        }
+
+        public void TotalFlee(int x, int y, string predator)
+        {
+            // make the first move
+            Random random = new Random();
+            Direction move = Flee(x, y, predator);
+            if (Game.SeekForMouse(x, y, move, predator, 1) == 0)
+            {
+                Game.Move(this, move, 1);
+            }
+
+            // make sure the prey will not flee back to the original suqare
+            List<Direction> possibleDirections = new List<Direction> { Direction.up, Direction.down, Direction.left, Direction.right };
+            if (move == Direction.up)
+            {
+                possibleDirections.Remove(Direction.down);
+            }
+            else if (move == Direction.down)
+            {
+                possibleDirections.Remove(Direction.up);
+            }
+            else if (move == Direction.left)
+            {
+                possibleDirections.Remove(Direction.right);
+            }
+            else if (move == Direction.right)
+            {
+                possibleDirections.Remove(Direction.left);
+            }
+
+            // if the mouse can countinue moving, the direction will not change,
+            // if cannot, it will choose a possible direction randomly.
+            if (Game.SeekForMouse(x, y, move, predator, 2) == 0)
+            {
+                Game.Move(this, move, 1);
+            }
+            else if (possibleDirections.Count > 0)
+            {
+                Direction moveDirection = possibleDirections[random.Next(possibleDirections.Count)];
+                Game.Move(this, moveDirection, 1);
+            }
         }
     }
 }
