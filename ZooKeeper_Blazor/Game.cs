@@ -17,6 +17,8 @@ namespace ZooKeeper_Blazor
         static public List<List<Zone>> animalZones = new List<List<Zone>>();
         static public Zone holdingPen = new Zone(-1, -1, null);
         static public int totalScore = 0;
+        static public List<List<Animal>> activationList = new List<List<Animal>>();
+        static public List<Animal> deadAnimal = new List<Animal>();
 
         //New attributes, which will be used by ZoneManager
         static public int directionIndex;
@@ -35,6 +37,12 @@ namespace ZooKeeper_Blazor
             }
             //At the beginning of the game create a random direction
             direction = zoneManager.CreateRandomDirection();
+
+            for (var i = 0; i < 10; i++)
+            {
+                activationList.Add(new List<Animal>());//list of List<Animal> with 10 different reaction time
+                Console.WriteLine(activationList);
+            }
         }
 
        //Since there is no need to add zones manually, so addzone will be deleted
@@ -99,36 +107,56 @@ namespace ZooKeeper_Blazor
             if (animalType == "mouse") holdingPen.occupant = new Mouse("Squeaky");
             if (animalType == "raptor") holdingPen.occupant = new Raptor("Chance the Raptor");
             if (animalType == "chick") holdingPen.occupant = new Chick("Tweety (uncopyrighted)");
+            int r = holdingPen.occupant.reactionTime - 1;
+            activationList[r].Add(holdingPen.occupant);
+            Console.WriteLine(holdingPen.occupant.emoji + "added to list" + r);
             Console.WriteLine($"Holding pen occupant at {holdingPen.occupant.location.x},{holdingPen.occupant.location.y}");
             ActivateAnimals();
             zoneManager.AddZoneWhenFull();//Keeping watching whether current is full and then adding new zone
         }
 
+        //static public void ActivateAnimals()
+        //{
+        //    for (var r = 1; r < 11; r++) // reaction times from 1 to 10
+        //    {
+        //        for (var y = 0; y < numCellsY; y++)
+        //        {
+        //            for (var x = 0; x < numCellsX; x++)
+        //            {
+        //                var zone = animalZones[y][x];
+        //                if (zone.occupant != null && zone.occupant.reactionTime == r && zone.occupant.TurnCheck == false)
+        //                {
+        //                    zone.occupant.Activate();
+        //                }
+        //            }
+        //        }
+        //    }
+        //    for (var y = 0; y < numCellsY; y++)
+        //    {
+        //        for (var x = 0; x < numCellsX; x++)
+        //        {
+        //            var zone = animalZones[y][x];
+        //            if (zone.occupant != null)
+        //            {
+        //                zone.occupant.TurnCheck = false;
+        //            }
+        //        }
+        //    }
+        //}
+
+
         static public void ActivateAnimals()
         {
-            for (var r = 1; r < 11; r++) // reaction times from 1 to 10
+            for (var r = 0; r < 10; r++)
             {
-                for (var y = 0; y < numCellsY; y++)
+                foreach (Animal a in activationList[r])
                 {
-                    for (var x = 0; x < numCellsX; x++)
-                    {
-                        var zone = animalZones[y][x];
-                        if (zone.occupant != null && zone.occupant.reactionTime == r && zone.occupant.TurnCheck == false)
-                        {
-                            zone.occupant.Activate();
-                        }
-                    }
+                    a.Activate();
                 }
-            }
-            for (var y = 0; y < numCellsY; y++)
-            {
-                for (var x = 0; x < numCellsX; x++)
+
+                foreach (Animal b in deadAnimal)
                 {
-                    var zone = animalZones[y][x];
-                    if (zone.occupant != null)
-                    {
-                        zone.occupant.TurnCheck = false;
-                    }
+                    activationList[b.reactionTime - 1].Remove(b);
                 }
             }
         }
@@ -193,6 +221,7 @@ namespace ZooKeeper_Blazor
                 case Direction.up:
                     if (animalZones[y - 1][x].occupant != null)
                     {
+                        deadAnimal.Add(animalZones[y - 1][x].occupant);
                         animalZones[y - 1][x].occupant = attacker;
                         animalZones[y][x].occupant = null;
                         return true; // hunt successful
@@ -201,6 +230,7 @@ namespace ZooKeeper_Blazor
                 case Direction.down:
                     if (animalZones[y + 1][x].occupant != null)
                     {
+                        deadAnimal.Add(animalZones[y + 1][x].occupant);
                         animalZones[y + 1][x].occupant = attacker;
                         animalZones[y][x].occupant = null;
                         return true; // hunt successful
@@ -209,6 +239,7 @@ namespace ZooKeeper_Blazor
                 case Direction.left:
                     if (animalZones[y][x - 1].occupant != null)
                     {
+                        deadAnimal.Add(animalZones[y][x - 1].occupant);
                         animalZones[y][x - 1].occupant = attacker;
                         animalZones[y][x].occupant = null;
                         return true; // hunt successful
@@ -217,6 +248,7 @@ namespace ZooKeeper_Blazor
                 case Direction.right:
                     if (animalZones[y][x + 1].occupant != null)
                     {
+                        deadAnimal.Add(animalZones[y][x + 1].occupant);
                         animalZones[y][x + 1].occupant = attacker;
                         animalZones[y][x].occupant = null;
                         return true; // hunt successful
