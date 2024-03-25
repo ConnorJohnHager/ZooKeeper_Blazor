@@ -39,8 +39,9 @@ namespace ZooKeeper_Blazor
             }
 
             Direction moveDirection = possibleDirections[random.Next(possibleDirections.Count)];
+
             if (Game.Move(this, moveDirection, 1) > 0) return true;
-            else return false; // can't walkaround
+            return false;
         }
     }
 }
