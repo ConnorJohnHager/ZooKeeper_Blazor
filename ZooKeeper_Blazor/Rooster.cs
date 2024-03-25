@@ -1,29 +1,25 @@
 ﻿using System;
-
 namespace ZooKeeper_Blazor
 {
-	public class Chick : Bird, IPrey, IPredator 
-	{
-        public Chick(string name)
+	public class Rooster : Bird, IPredator, IPrey
+    {
+		public Rooster(string name)
         {
-            emoji = "🐥";
-            species = "chick";
+            emoji = "🐓";
+            species = "rooster";
             this.name = name; // "this" to clarify instance vs. method parameter
-            reactionTime = new Random().Next(6, 10);
+            reactionTime = new Random().Next(3, 6);
         }
-
-        public int totalTurns { get; private set; } = 0;//track chick's total turns 
 
         public override void Activate()
         {
             base.Activate();
-            Console.WriteLine("I am a chick. Beepbeep.");
             turnsSinceLastHunt++;
-            totalTurns++;
             TaskProcess();
+            Console.WriteLine("I am a rooster. Bacaw!");
         }
 
-        public void TaskProcess()
+        public void TaskProcess() // Priority is to flee over hunt
         {
             TaskCheck = (this as IPrey).Flee(this, location.x, location.y, "cat", 1);
             if (TaskCheck == false)

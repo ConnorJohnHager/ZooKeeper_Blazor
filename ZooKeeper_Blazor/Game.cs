@@ -59,7 +59,7 @@ namespace ZooKeeper_Blazor
                 ActivateAnimals();
                 totalScore = scoreCalculator.CalculateTotalScore(animalZones);
 
-                zoneManager.AddZoneWhenFull();//Adding new zone should be excute after all animals finished their actions
+                zoneManager.AddZoneWhenFull();//Adding new zone should be executed after all animals finish their actions
                 if (zoneManager.IsWin())
                 {
                     Console.WriteLine("Player reached the goal");
@@ -91,21 +91,26 @@ namespace ZooKeeper_Blazor
             }
         }
 
-        static public void AddAnimalToHolding(string animalType)
+        static public void AddToHolding(string occupantType)
         {
             ZoneManager zoneManager = new ZoneManager();
             if (holdingPen.occupant != null) return;
-            if (animalType == "cat") holdingPen.occupant = new Cat("Fluffy");
-            if (animalType == "mouse") holdingPen.occupant = new Mouse("Squeaky");
-            if (animalType == "raptor") holdingPen.occupant = new Raptor("Chance the Raptor");
-            if (animalType == "chick") holdingPen.occupant = new Chick("Tweety (uncopyrighted)");
+            if (occupantType == "cat") holdingPen.occupant = new Cat("Fluffy");
+            if (occupantType == "mouse") holdingPen.occupant = new Mouse("Squeaky");
+            if (occupantType == "raptor") holdingPen.occupant = new Raptor("Chance the Raptor");
+            if (occupantType == "chick") holdingPen.occupant = new Chick("Tweety (uncopyrighted)");
+            if (occupantType == "rooster") holdingPen.occupant = new Rooster("Earl Wings");
+            if (occupantType == "vulture") holdingPen.occupant = new Vulture("Van Helswing");
+            if (occupantType == "grass") holdingPen.occupant = new Grass();
+            if (occupantType == "corpse") holdingPen.occupant = new Corpse();
             Console.WriteLine($"Holding pen occupant at {holdingPen.occupant.location.x},{holdingPen.occupant.location.y}");
-            ActivateAnimals();
+            //ActivateAnimals(); turns only occur when placed on the board now
             zoneManager.AddZoneWhenFull();//Keeping watching whether current is full and then adding new zone
         }
 
         static public void ActivateAnimals()
         {
+            //Going through activations
             for (var r = 1; r < 11; r++) // reaction times from 1 to 10
             {
                 for (var y = 0; y < numCellsY; y++)
@@ -113,21 +118,65 @@ namespace ZooKeeper_Blazor
                     for (var x = 0; x < numCellsX; x++)
                     {
                         var zone = animalZones[y][x];
-                        if (zone.occupant != null && zone.occupant.reactionTime == r && zone.occupant.TurnCheck == false)
+                        if (zone.occupant as Animal != null && ((Animal)zone.occupant).reactionTime == r && ((Animal)zone.occupant).TurnCheck == false)
                         {
-                            zone.occupant.Activate();
+                            ((Animal)zone.occupant).Activate();
                         }
                     }
                 }
             }
+
+            //Going through deaths
+            for (var y = 0; y < numCellsY; y++) 
+            {
+                for (var x = 0; x < numCellsX; x++)
+                {
+                    var zone = animalZones[y][x];
+                    Animal animal = zone.occupant as Animal;
+                    if (animal != null && animal.turnsSinceLastHunt > 3)
+                    {
+                        zone.occupant = new Corpse();
+                    }
+                }
+            }
+
+            //Going through chicks maturing into other birds
             for (var y = 0; y < numCellsY; y++)
             {
                 for (var x = 0; x < numCellsX; x++)
                 {
                     var zone = animalZones[y][x];
-                    if (zone.occupant != null)
+                    Chick chick = zone.occupant as Chick;
+
+                    if (chick != null && chick.totalTurns > 3) //grow up!!!
                     {
-                        zone.occupant.TurnCheck = false;
+                        Random random = new Random();
+                        int choice = random.Next(10);
+                        if (choice < 2)
+                        {
+                            zone.occupant = new Raptor("raptor");
+                        }
+                        else if (choice < 7) // The probability of a rooster is 1 in 2
+                        {
+                            zone.occupant = new Rooster("rooster");
+                        }
+                        else // The remaining 1/3 probability is allocated to Vultures
+                        {
+                            zone.occupant = new Vulture("vulture");
+                        }
+                    }
+                }
+            }
+
+                //Going through resetting turnchecks
+                for (var y = 0; y < numCellsY; y++)
+            {
+                for (var x = 0; x < numCellsX; x++)
+                {
+                    var zone = animalZones[y][x];
+                    if (zone.occupant as Animal != null)
+                    {
+                        ((Animal)zone.occupant).TurnCheck = false;
                     }
                 }
             }

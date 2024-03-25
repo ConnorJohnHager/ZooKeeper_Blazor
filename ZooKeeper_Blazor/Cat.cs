@@ -16,6 +16,7 @@ namespace ZooKeeper_Blazor
         {
             base.Activate();
             Console.WriteLine("I am a cat. Meow.");
+            turnsSinceLastHunt++;
             TaskProcess();
         }
 
@@ -24,10 +25,14 @@ namespace ZooKeeper_Blazor
             TaskCheck = (this as IPrey).Flee(this, location.x, location.y, "raptor", 2);
             if (TaskCheck == false)
             {
-                TaskCheck = (this as IPredator).Hunt(this, location.x, location.y, "mouse");
+                TaskCheck = (this as IPredator).Hunt(this, location.x, location.y, "rooster");
                 if (TaskCheck == false)
                 {
                     TaskCheck = (this as IPredator).Hunt(this, location.x, location.y, "chick");
+                    if (TaskCheck == false)
+                    {
+                        TaskCheck = (this as IPredator).Hunt(this, location.x, location.y, "mouse");
+                    }
                 }
             }
             TurnCheck = true;

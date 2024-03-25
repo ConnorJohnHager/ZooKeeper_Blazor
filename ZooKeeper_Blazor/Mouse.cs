@@ -2,7 +2,7 @@
 
 namespace ZooKeeper_Blazor
 {
-    public class Mouse : Animal, IPrey
+    public class Mouse : Animal, IPrey, IPredator
     {
         public Mouse(string name)
         {
@@ -19,6 +19,7 @@ namespace ZooKeeper_Blazor
         {
             base.Activate();
             Console.WriteLine("I am a mouse. Squeak.");
+            turnsSinceLastHunt++;
             TaskProcess();
             // in my part, my method to let the mouse flee two squares 
             // and can move different way in the second step is TotalFlee(), 
@@ -33,6 +34,10 @@ namespace ZooKeeper_Blazor
             if (TaskCheck == false)
             {
                 TaskCheck = TotalFlee(location.x, location.y, "cat");
+                if (TaskCheck == false)
+                {
+                    TaskCheck = (this as IPredator).Hunt(this, location.x, location.y, "grass");
+                }
             }
             TurnCheck = true;
         }
