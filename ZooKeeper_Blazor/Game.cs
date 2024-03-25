@@ -102,6 +102,7 @@ namespace ZooKeeper_Blazor
             if (occupantType == "rooster") holdingPen.occupant = new Rooster("Earl Wings");
             if (occupantType == "vulture") holdingPen.occupant = new Vulture("Van Helswing");
             if (occupantType == "grass") holdingPen.occupant = new Grass();
+            if (occupantType == "corpse") holdingPen.occupant = new Corpse();
             Console.WriteLine($"Holding pen occupant at {holdingPen.occupant.location.x},{holdingPen.occupant.location.y}");
             ActivateAnimals();
             zoneManager.AddZoneWhenFull();//Keeping watching whether current is full and then adding new zone
