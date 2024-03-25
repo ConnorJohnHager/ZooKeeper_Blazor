@@ -50,7 +50,7 @@ namespace ZooKeeper_Blazor
         {
             int currrentType;
 
-            int[] numberOfEachType = new int[4];
+            int[] numberOfEachType = new int[5];
             for (int i = 0; i < animalZones.Count; i++)
             {
                 for (int j = 0; j < animalZones[i].Count; j++)
@@ -70,6 +70,9 @@ namespace ZooKeeper_Blazor
                                 break;
                             case "raptor":
                                 numberOfEachType[3]++;
+                                break;
+                            case "grass":
+                                numberOfEachType[4]++;
                                 break;
                             default:
                                 break;
@@ -88,13 +91,17 @@ namespace ZooKeeper_Blazor
             }
             else if (currrentType == 1)
             {
-                return numberOfEachType[3];
+                return numberOfEachType[4];
             }
             else if (currrentType == 2)
             {
-                return numberOfEachType[2];
+                return numberOfEachType[3];
             }
             else if (currrentType == 3)
+            {
+                return numberOfEachType[2];
+            }
+            else if (currrentType == 4)
             {
                 return numberOfEachType[1];
             }
@@ -108,7 +115,7 @@ namespace ZooKeeper_Blazor
         public int FindTheMostOne(List<List<Zone>> animalZones)
         {
 
-            int[] numberOfEachType = new int[4];
+            int[] numberOfEachType = new int[5];
             for (int i = 0; i < animalZones.Count; i++)
             {
                 for (int j = 0; j < animalZones[i].Count; j++)
@@ -129,6 +136,9 @@ namespace ZooKeeper_Blazor
                             case "raptor":
                                 numberOfEachType[3]++;
                                 break;
+                            case "grass":
+                                numberOfEachType[4]++;
+                                break;
                             default:
                                 break;
                         }
@@ -138,7 +148,7 @@ namespace ZooKeeper_Blazor
 
             Array.Sort(numberOfEachType);
 
-            return numberOfEachType[3];
+            return numberOfEachType[5];
         }
     }
 }

@@ -59,7 +59,7 @@ namespace ZooKeeper_Blazor
                 ActivateAnimals();
                 totalScore = scoreCalculator.CalculateTotalScore(animalZones);
 
-                zoneManager.AddZoneWhenFull();//Adding new zone should be excute after all animals finished their actions
+                zoneManager.AddZoneWhenFull();//Adding new zone should be executed after all animals finish their actions
                 if (zoneManager.IsWin())
                 {
                     Console.WriteLine("Player reached the goal");
@@ -114,7 +114,7 @@ namespace ZooKeeper_Blazor
                     for (var x = 0; x < numCellsX; x++)
                     {
                         var zone = animalZones[y][x];
-                        if (zone.occupant != null && ((Animal)zone.occupant).reactionTime == r && ((Animal)zone.occupant).TurnCheck == false)
+                        if (zone.occupant as Animal != null && ((Animal)zone.occupant).reactionTime == r && ((Animal)zone.occupant).TurnCheck == false)
                         {
                             ((Animal)zone.occupant).Activate();
                         }
@@ -126,7 +126,7 @@ namespace ZooKeeper_Blazor
                 for (var x = 0; x < numCellsX; x++)
                 {
                     var zone = animalZones[y][x];
-                    if (zone.occupant != null)
+                    if (zone.occupant as Animal != null)
                     {
                         ((Animal)zone.occupant).TurnCheck = false;
                     }
