@@ -41,7 +41,7 @@ namespace ZooKeeper_Blazor
 
         static public void ZoneClick(Zone clickedZone)
         {
-            // ScoreCalculator scoreCalculator = new ScoreCalculator();
+            ScoreCalculator scoreCalculator = new ScoreCalculator();
             ZoneManager zoneManager = new ZoneManager();
             Console.Write("Got animal ");
             Console.WriteLine(clickedZone.emoji == "" ? "none" : clickedZone.emoji);
@@ -57,7 +57,7 @@ namespace ZooKeeper_Blazor
                 holdingPen.occupant.location.y = -1;
                 clickedZone.occupant = null;
                 ActivateAnimals();
-                // totalScore = scoreCalculator.CalculateTotalScore(animalZones);
+                totalScore = scoreCalculator.CalculateTotalScore(animalZones);
 
                 zoneManager.AddZoneWhenFull();//Adding new zone should be executed after all animals finish their actions
                 if (zoneManager.IsWin())
@@ -75,7 +75,7 @@ namespace ZooKeeper_Blazor
                 holdingPen.occupant = null;
                 Console.WriteLine("Empty spot now holds: " + clickedZone.emoji);
                 ActivateAnimals();
-                // totalScore = scoreCalculator.CalculateTotalScore(animalZones);
+                totalScore = scoreCalculator.CalculateTotalScore(animalZones);
 
                 zoneManager.AddZoneWhenFull();//Adding new zone should be excute after all animals finished their actions
                 if (zoneManager.IsWin())
