@@ -50,7 +50,7 @@ namespace ZooKeeper_Blazor
         {
             int currrentType;
 
-            int[] numberOfEachType = new int[5];
+            int[] numberOfEachType = new int[8];
             for (int i = 0; i < animalZones.Count; i++)
             {
                 for (int j = 0; j < animalZones[i].Count; j++)
@@ -75,13 +75,13 @@ namespace ZooKeeper_Blazor
                                 numberOfEachType[4]++;
                                 break;
                             case "vulture":
-                                numberOfEachType[4]++;
+                                numberOfEachType[5]++;
                                 break;
                             case "grass":
-                                numberOfEachType[4]++;
+                                numberOfEachType[6]++;
                                 break;
                             case "corpse":
-                                numberOfEachType[4]++;
+                                numberOfEachType[7]++;
                                 break;
                             default:
                                 break;
@@ -114,16 +114,28 @@ namespace ZooKeeper_Blazor
             {
                 return numberOfEachType[3];
             }
-            else
+            else if (currrentType == 5)
             {
                 return numberOfEachType[4];
+            }
+            else if (currrentType == 6)
+            {
+                return numberOfEachType[5];
+            }
+            else if (currrentType == 7)
+            {
+                return numberOfEachType[6];
+            }
+            else
+            {
+                return numberOfEachType[7];
             }
         }
 
         public int FindTheMostOne(List<List<Zone>> animalZones)
         {
 
-            int[] numberOfEachType = new int[5];
+            int[] numberOfEachType = new int[8];
             for (int i = 0; i < animalZones.Count; i++)
             {
                 for (int j = 0; j < animalZones[i].Count; j++)
@@ -148,13 +160,13 @@ namespace ZooKeeper_Blazor
                                 numberOfEachType[4]++;
                                 break;
                             case "vulture":
-                                numberOfEachType[4]++;
+                                numberOfEachType[5]++;
                                 break;
                             case "grass":
-                                numberOfEachType[4]++;
+                                numberOfEachType[6]++;
                                 break;
                             case "corpse":
-                                numberOfEachType[4]++;
+                                numberOfEachType[7]++;
                                 break;
                             default:
                                 break;
