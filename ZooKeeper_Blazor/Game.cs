@@ -20,7 +20,7 @@ namespace ZooKeeper_Blazor
 
         //New attributes, which will be used by ZoneManager
         static public int directionIndex;
-        static public string direction;
+        static public string direction = "";
 
 
         static public void SetUpGame()
