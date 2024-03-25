@@ -29,6 +29,10 @@ namespace ZooKeeper_Blazor
                 if (TaskCheck == false)
                 {
                     TaskCheck = Fly(this, location.x, location.y, 2);
+                    if (TaskCheck == false)
+                    {
+                        Walkabout(location.x, location.y);
+                    }
                 }
             }
             TurnCheck = true;

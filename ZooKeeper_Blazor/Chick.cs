@@ -29,6 +29,10 @@ namespace ZooKeeper_Blazor
             if (TaskCheck == false)
             {
                 TaskCheck = (this as IPredator).Hunt(this, location.x, location.y, "grass");
+                if (TaskCheck == false)
+                {
+                    Walkabout(location.x, location.y);
+                }
             }
             TurnCheck = true;
         }
