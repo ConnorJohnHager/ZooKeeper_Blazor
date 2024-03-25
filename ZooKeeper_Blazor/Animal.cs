@@ -38,9 +38,12 @@ namespace ZooKeeper_Blazor
                 possibleDirections.Remove(Direction.left);
             }
 
-            Direction moveDirection = possibleDirections[random.Next(possibleDirections.Count)];
+            if (possibleDirections.Count > 0)
+            {
+                Direction moveDirection = possibleDirections[random.Next(possibleDirections.Count)];
 
-            if (Game.Move(this, moveDirection, 1) > 0) return true;
+                if (Game.Move(this, moveDirection, 1) > 0) return true;
+            }
             return false;
         }
     }
