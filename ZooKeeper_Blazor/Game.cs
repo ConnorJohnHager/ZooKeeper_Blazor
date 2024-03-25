@@ -133,7 +133,7 @@ namespace ZooKeeper_Blazor
                 {
                     var zone = animalZones[y][x];
                     Animal animal = zone.occupant as Animal;
-                    if (animal != null && animal.turnsSinceLastHunt > 3)
+                    if (animal != null && animal.turnsSinceLastHunt > 5)
                     {
                         zone.occupant = new Corpse();
                     }
