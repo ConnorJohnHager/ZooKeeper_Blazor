@@ -19,6 +19,7 @@ namespace ZooKeeper_Blazor
         {
             base.Activate();
             Console.WriteLine("I am a mouse. Squeak.");
+            turnsSinceLastHunt++;
             TaskProcess();
         }
 

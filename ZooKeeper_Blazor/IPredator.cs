@@ -8,22 +8,38 @@ namespace ZooKeeper_Blazor
         {
             if (Game.Seek(x, y, Direction.up, prey, 1))
             {
-                if (Game.Attack(predator, Direction.up)) return true;
+                if (Game.Attack(predator, Direction.up))
+                {
+                    predator.turnsSinceLastHunt = 0;
+                    return true;
+                }
                 return false;
             }
             else if (Game.Seek(x, y, Direction.down, prey, 1))
             {
-                if (Game.Attack(predator, Direction.down)) return true;
+                if (Game.Attack(predator, Direction.down))
+                {
+                    predator.turnsSinceLastHunt = 0;
+                    return true;
+                }
                 return false;
             }
             else if (Game.Seek(x, y, Direction.left, prey, 1))
             {
-                if (Game.Attack(predator, Direction.left)) return true;
+                if (Game.Attack(predator, Direction.left))
+                {
+                    predator.turnsSinceLastHunt = 0;
+                    return true;
+                }
                 return false;
             }
             else if (Game.Seek(x, y, Direction.right, prey, 1))
             {
-                if (Game.Attack(predator, Direction.right)) return true;
+                if (Game.Attack(predator, Direction.right))
+                {
+                    predator.turnsSinceLastHunt = 0;
+                    return true;
+                }
                 return false;
             }
             return false; // nothing to hunt
