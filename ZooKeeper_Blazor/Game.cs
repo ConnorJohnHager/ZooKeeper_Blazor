@@ -182,6 +182,40 @@ namespace ZooKeeper_Blazor
             return false;
         }
 
+        // check squares to the nearest predator
+        static public int CheckSquares(int x, int y, Direction d, string target, int distance)
+        {
+            int squaresToNearest = 0;
+            for (int i = 1; i <= distance; i++)
+            {
+                switch (d)
+                {
+                    case Direction.up:
+                        y--;
+                        break;
+                    case Direction.down:
+                        y++;
+                        break;
+                    case Direction.left:
+                        x--;
+                        break;
+                    case Direction.right:
+                        x++;
+                        break;
+                }
+
+                if (y < 0 || x < 0 || y > numCellsY - 1 || x > numCellsX - 1) return 0;
+                if (animalZones[y][x].occupant == null) return 0;
+                if (animalZones[y][x].occupant.species == target)
+                {
+                    squaresToNearest = i;
+                    return squaresToNearest;
+                }
+            }
+
+            return 0;
+        }
+
         static public int Move(Animal animal, Direction d, int distance)
         {
             int movedDistance = 0;

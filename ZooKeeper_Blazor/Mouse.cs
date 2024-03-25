@@ -20,6 +20,11 @@ namespace ZooKeeper_Blazor
             base.Activate();
             Console.WriteLine("I am a mouse. Squeak.");
             TaskProcess();
+            // in my part, my method to let the mouse flee two squares 
+            // and can move different way in the second step is TotalFlee(), 
+            // so i just put 
+            // (this as IPrey).TotalFlee(this, location.x, location.y, "cat");
+            // here instead of other things
         }
 
         public void TaskProcess()
