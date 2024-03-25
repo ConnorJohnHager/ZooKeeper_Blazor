@@ -29,10 +29,10 @@ namespace ZooKeeper_Blazor
 
         public void TaskProcess() //To update
         {
-            TaskCheck = (this as IPrey).Flee(this, location.x, location.y, "raptor", 2);
+            TaskCheck = TotalFlee(location.x, location.y, "raptor");
             if (TaskCheck == false)
             {
-                TaskCheck = (this as IPrey).Flee(this, location.x, location.y, "cat", 2);
+                TaskCheck = TotalFlee(location.x, location.y, "cat");
             }
             TurnCheck = true;
         }
@@ -75,7 +75,7 @@ namespace ZooKeeper_Blazor
             }
         }
 
-        public void TotalFlee(int x, int y, string predator)
+        public bool TotalFlee(int x, int y, string predator)
         {
             // make the first move
             Random random = new Random();
@@ -108,13 +108,14 @@ namespace ZooKeeper_Blazor
             // if cannot, it will choose a possible direction randomly.
             if (Game.SeekForMouse(x, y, move, predator, 2) == 0)
             {
-                Game.Move(this, move, 1);
+                if (Game.Move(this, move, 1) > 0) return true;
             }
             else if (possibleDirections.Count > 0)
             {
                 Direction moveDirection = possibleDirections[random.Next(possibleDirections.Count)];
-                Game.Move(this, moveDirection, 1);
+                if (Game.Move(this, moveDirection, 1) > 0) return true;
             }
+            return false;
         }
     }
 }
