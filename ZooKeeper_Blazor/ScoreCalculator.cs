@@ -71,7 +71,16 @@ namespace ZooKeeper_Blazor
                             case "raptor":
                                 numberOfEachType[3]++;
                                 break;
+                            case "rooster":
+                                numberOfEachType[4]++;
+                                break;
+                            case "vulture":
+                                numberOfEachType[4]++;
+                                break;
                             case "grass":
+                                numberOfEachType[4]++;
+                                break;
+                            case "corpse":
                                 numberOfEachType[4]++;
                                 break;
                             default:
@@ -135,7 +144,16 @@ namespace ZooKeeper_Blazor
                             case "raptor":
                                 numberOfEachType[3]++;
                                 break;
+                            case "rooster":
+                                numberOfEachType[4]++;
+                                break;
+                            case "vulture":
+                                numberOfEachType[4]++;
+                                break;
                             case "grass":
+                                numberOfEachType[4]++;
+                                break;
+                            case "corpse":
                                 numberOfEachType[4]++;
                                 break;
                             default:

@@ -41,7 +41,7 @@ namespace ZooKeeper_Blazor
 
         static public void ZoneClick(Zone clickedZone)
         {
-            ScoreCalculator scoreCalculator = new ScoreCalculator();
+            // ScoreCalculator scoreCalculator = new ScoreCalculator();
             ZoneManager zoneManager = new ZoneManager();
             Console.Write("Got animal ");
             Console.WriteLine(clickedZone.emoji == "" ? "none" : clickedZone.emoji);
@@ -57,7 +57,7 @@ namespace ZooKeeper_Blazor
                 holdingPen.occupant.location.y = -1;
                 clickedZone.occupant = null;
                 ActivateAnimals();
-                totalScore = scoreCalculator.CalculateTotalScore(animalZones);
+                // totalScore = scoreCalculator.CalculateTotalScore(animalZones);
 
                 zoneManager.AddZoneWhenFull();//Adding new zone should be executed after all animals finish their actions
                 if (zoneManager.IsWin())
@@ -75,7 +75,7 @@ namespace ZooKeeper_Blazor
                 holdingPen.occupant = null;
                 Console.WriteLine("Empty spot now holds: " + clickedZone.emoji);
                 ActivateAnimals();
-                totalScore = scoreCalculator.CalculateTotalScore(animalZones);
+                // totalScore = scoreCalculator.CalculateTotalScore(animalZones);
 
                 zoneManager.AddZoneWhenFull();//Adding new zone should be excute after all animals finished their actions
                 if (zoneManager.IsWin())
@@ -99,6 +99,8 @@ namespace ZooKeeper_Blazor
             if (occupantType == "mouse") holdingPen.occupant = new Mouse("Squeaky");
             if (occupantType == "raptor") holdingPen.occupant = new Raptor("Chance the Raptor");
             if (occupantType == "chick") holdingPen.occupant = new Chick("Tweety (uncopyrighted)");
+            if (occupantType == "rooster") holdingPen.occupant = new Rooster("Earl Wings");
+            if (occupantType == "vulture") holdingPen.occupant = new Vulture("Van Helswing");
             if (occupantType == "grass") holdingPen.occupant = new Grass();
             Console.WriteLine($"Holding pen occupant at {holdingPen.occupant.location.x},{holdingPen.occupant.location.y}");
             ActivateAnimals();
