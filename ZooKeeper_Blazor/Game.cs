@@ -156,7 +156,7 @@ namespace ZooKeeper_Blazor
                         {
                             zone.occupant = new Raptor("raptor");
                         }
-                        else if (choice < 7) // The probability of a rooster is 1 in 2
+                        else if (choice < 7) // The probability of a rooster is 1/2
                         {
                             zone.occupant = new Rooster("rooster");
                         }
@@ -168,8 +168,28 @@ namespace ZooKeeper_Blazor
                 }
             }
 
-                //Going through resetting turnchecks
-                for (var y = 0; y < numCellsY; y++)
+            //Corpses turn into grass after three turns
+            for (var y = 0; y < numCellsY; y++)
+            {
+                for (var x = 0; x < numCellsX; x++)
+                {
+                    var zone = animalZones[y][x];
+
+                    Corpse corpse = zone.occupant as Corpse;
+
+                    if (corpse != null)
+                    {
+                        corpse.turnsRemaining--;
+                        if (corpse.turnsRemaining == 0)
+                        {
+                            zone.occupant = new Grass();
+                        }
+                    }
+                }
+            }
+
+            //Going through resetting turnchecks
+            for (var y = 0; y < numCellsY; y++)
             {
                 for (var x = 0; x < numCellsX; x++)
                 {
