@@ -90,46 +90,11 @@ namespace ZooKeeper_Blazor
                 }
             }
 
-            currrentType = CountSpecies(animalZones);
+            //Filtering all values that equals zero
+            var nonZeroValues = numberOfEachType.Where(val => val != 0).ToArray();
 
-            Array.Sort(numberOfEachType);
-
-            if (currrentType == 0)
-            {
-                return 0;
-            }
-            else if (currrentType == 1)
-            {
-                return numberOfEachType[0];
-            }
-            else if (currrentType == 2)
-            {
-                return numberOfEachType[1];
-            }
-            else if (currrentType == 3)
-            {
-                return numberOfEachType[2];
-            }
-            else if (currrentType == 4)
-            {
-                return numberOfEachType[3];
-            }
-            else if (currrentType == 5)
-            {
-                return numberOfEachType[4];
-            }
-            else if (currrentType == 6)
-            {
-                return numberOfEachType[5];
-            }
-            else if (currrentType == 7)
-            {
-                return numberOfEachType[6];
-            }
-            else
-            {
-                return numberOfEachType[7];
-            }
+            //Return the minimum value after filtering
+            return nonZeroValues.Min();
         }
 
         public int FindTheMostOne(List<List<Zone>> animalZones)
