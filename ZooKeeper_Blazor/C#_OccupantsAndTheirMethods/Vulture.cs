@@ -15,11 +15,10 @@ namespace ZooKeeper_Blazor
         {
             base.Activate();
             Console.WriteLine("I am a vulture. Fear me!");
-            turnsSinceLastHunt++;
             TaskProcess();
         }
 
-        public void TaskProcess()
+        public void TaskProcess() // Priority is to hunt over fly over walkabout
         {
             TaskCheck = (this as IPredator).Hunt(this, location.x, location.y, "corpse");
             if (TaskCheck == false)
@@ -30,7 +29,17 @@ namespace ZooKeeper_Blazor
                     Walkabout(location.x, location.y);
                 }
             }
-            TurnCheck = true;
+
+            TaskCheck = CheckForDeath(this); // Check if the animal has eaten within the required number of turns or has died
+            if (TaskCheck == true)
+            {
+                Game.Replace(location.x, location.y, new Corpse());
+            }
+            else
+            {
+                age++;
+                TurnCheck = true;
+            }
         }
     }
 }

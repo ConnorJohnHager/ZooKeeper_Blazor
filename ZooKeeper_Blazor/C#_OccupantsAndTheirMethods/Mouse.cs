@@ -8,27 +8,19 @@ namespace ZooKeeper_Blazor
         {
             emoji = "🐭";
             species = "mouse";
-            this.name = name; // "this" to clarify instance vs. method parameter
-            reactionTime = new Random().Next(1, 4); // reaction time of 1 (fast) to 3
-            /* Note that Mouse reactionTime range is smaller than Cat reactionTime,
-             * so mice are more likely to react to their surroundings faster than cats!
-             Mouse*/
+            this.name = name;
+            reactionTime = new Random().Next(1, 4);
+ 
         }
 
         public override void Activate()
         {
             base.Activate();
             Console.WriteLine("I am a mouse. Squeak.");
-            turnsSinceLastHunt++;
             TaskProcess();
-            // in my part, my method to let the mouse flee two squares 
-            // and can move different way in the second step is TotalFlee(), 
-            // so i just put 
-            // (this as IPrey).TotalFlee(this, location.x, location.y, "cat");
-            // here instead of other things
         }
 
-        public void TaskProcess() //To update
+        public void TaskProcess() // Priority is to flee over hunt over walkabout
         {
             TaskCheck = TotalFlee(location.x, location.y, "raptor");
             if (TaskCheck == false)
@@ -43,9 +35,22 @@ namespace ZooKeeper_Blazor
                     }
                 }
             }
-            TurnCheck = true;
+
+            TaskCheck = CheckForDeath(this); // Check if the animal has eaten within the required number of turns or has died
+            if (TaskCheck == true)
+            {
+                Game.Replace(location.x, location.y, new Corpse());
+            }
+            else
+            {
+                age++;
+                TurnCheck = true;
+            }
         }
 
+
+
+        //From Valentina
         public Direction Flee(int x, int y, string predator)
         {
             Random random = new Random();

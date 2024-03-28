@@ -16,11 +16,10 @@ namespace ZooKeeper_Blazor
         {
             base.Activate();
             Console.WriteLine("I am a cat. Meow.");
-            turnsSinceLastHunt++;
             TaskProcess();
         }
 
-        public void TaskProcess() // Priority is to flee over hunt
+        public void TaskProcess() // Priority is to flee over hunt over walkabout
         {
             TaskCheck = (this as IPrey).Flee(this, location.x, location.y, "raptor", 2);
             if (TaskCheck == false)
@@ -39,7 +38,17 @@ namespace ZooKeeper_Blazor
                     }
                 }
             }
-            TurnCheck = true;
+
+            TaskCheck = CheckForDeath(this); // Check if the animal has eaten within the required number of turns or has died
+            if (TaskCheck == true)
+            {
+                Game.Replace(location.x, location.y, new Corpse());
+            }
+            else
+            {
+                age++;
+                TurnCheck = true;
+            }
         }
     }
 }

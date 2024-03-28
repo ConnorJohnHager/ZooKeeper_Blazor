@@ -18,12 +18,11 @@ namespace ZooKeeper_Blazor
         {
             base.Activate();
             Console.WriteLine("I am a chick. Beepbeep.");
-            turnsSinceLastHunt++;
             totalTurns++;
             TaskProcess();
         }
 
-        public void TaskProcess()
+        public void TaskProcess() // Priority is to flee over hunt over walkabout
         {
             TaskCheck = (this as IPrey).Flee(this, location.x, location.y, "cat", 1);
             if (TaskCheck == false)
@@ -34,7 +33,37 @@ namespace ZooKeeper_Blazor
                     Walkabout(location.x, location.y);
                 }
             }
-            TurnCheck = true;
+
+            TaskCheck = CheckForMaturity(this, 3); // Check if chick is old enough to randomly grow into a raptor, rooster, or vulture
+            if (TaskCheck == true)
+            {
+                Random random = new Random();
+                int choice = random.Next(10);
+
+                if (choice < 2)
+                {
+                    Game.Replace(location.x, location.y, new Raptor(this.name));
+                }
+                else if (choice < 7)
+                {
+                    Game.Replace(location.x, location.y, new Rooster(this.name));
+                }
+                else
+                {
+                    Game.Replace(location.x, location.y, new Vulture(this.name));
+                }
+            }
+
+            TaskCheck = CheckForDeath(this); // Check if the animal has eaten within the required number of turns or has died
+            if (TaskCheck == true)
+            {
+                Game.Replace(location.x, location.y, new Corpse());
+            }
+            else
+            {
+                age++;
+                TurnCheck = true;
+            }
         }
     }
 }

@@ -126,48 +126,6 @@ namespace ZooKeeper_Blazor
                 }
             }
 
-            //Going through deaths
-            for (var y = 0; y < numCellsY; y++) 
-            {
-                for (var x = 0; x < numCellsX; x++)
-                {
-                    var zone = animalZones[y][x];
-                    Animal animal = zone.occupant as Animal;
-                    if (animal != null && animal.turnsSinceLastHunt > 5)
-                    {
-                        zone.occupant = new Corpse();
-                    }
-                }
-            }
-
-            //Going through chicks maturing into other birds
-            for (var y = 0; y < numCellsY; y++)
-            {
-                for (var x = 0; x < numCellsX; x++)
-                {
-                    var zone = animalZones[y][x];
-                    Chick chick = zone.occupant as Chick;
-
-                    if (chick != null && chick.totalTurns > 3) //grow up!!!
-                    {
-                        Random random = new Random();
-                        int choice = random.Next(10);
-                        if (choice < 2)
-                        {
-                            zone.occupant = new Raptor("raptor");
-                        }
-                        else if (choice < 7) // The probability of a rooster is 1/2
-                        {
-                            zone.occupant = new Rooster("rooster");
-                        }
-                        else // The remaining 1/3 probability is allocated to Vultures
-                        {
-                            zone.occupant = new Vulture("vulture");
-                        }
-                    }
-                }
-            }
-
             //Corpses turn into grass after three turns
             for (var y = 0; y < numCellsY; y++)
             {
@@ -287,6 +245,12 @@ namespace ZooKeeper_Blazor
                 }
             }
             return movedDistance;
+        }
+
+        static public void Replace(int x, int y, Occupant newOccupant)
+        {
+            var zone = animalZones[y][x];
+            zone.occupant = newOccupant;
         }
 
         static public bool Attack(Animal attacker, Direction d)

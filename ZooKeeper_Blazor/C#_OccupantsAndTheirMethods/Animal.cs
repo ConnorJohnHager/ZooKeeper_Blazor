@@ -5,11 +5,13 @@ namespace ZooKeeper_Blazor
     public class Animal : Occupant
     {
         public string name;
+        public int age = 0; // all new animals default starting at 0
         public int reactionTime = 5; // default reaction time for animals (1 - 10)
         public bool TaskCheck;
         public bool TurnCheck;
-
-        public int turnsSinceLastHunt { get; set; } = 0;//track the non-eating turn
+        
+        public int turnsForHunting = 6; // default turns given for hunting food
+        public int turnsSinceLastHunt { get; set; } = 1; // tracks the non-eating turns, starting with 1 for processing
 
         virtual public void Activate()
         {
@@ -19,7 +21,7 @@ namespace ZooKeeper_Blazor
         public bool Walkabout(int x, int y)
         {
             Random random = new Random();
-            List<Direction> possibleDirections = new List<Direction> { Direction.up, Direction.down, Direction.left, Direction.right };
+            List<Direction> possibleDirections = new List<Direction> { Direction.up, Direction.down, Direction.left, Direction.right};
 
             if (!Game.Seek(x, y, Direction.up, "null", 1)) // check all directions for ability to wander in
             {
@@ -43,6 +45,31 @@ namespace ZooKeeper_Blazor
                 Direction moveDirection = possibleDirections[random.Next(possibleDirections.Count)];
 
                 if (Game.Move(this, moveDirection, 1) > 0) return true;
+            }
+            return false;
+        }
+
+        public bool CheckForMaturity(Animal animal, int adulthood) // check if an animal is old enough to grow up or reproduce
+        {
+            if (animal.age == adulthood)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        public bool CheckForDeath(Animal animal) // check if animal hasn't eaten within the required amount of turns
+        {
+            if (animal.turnsSinceLastHunt == animal.turnsForHunting)
+            {
+                return true;
+            }
+            else
+            {
+                animal.turnsSinceLastHunt++;
             }
             return false;
         }
