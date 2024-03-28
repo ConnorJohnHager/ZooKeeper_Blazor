@@ -4,6 +4,12 @@ using System.Text;
 
 namespace ZooKeeper_Blazor
 {
+    /* 
+    In the Games class, using the delegation mode to apply the function,
+    Game will not directly realize the two interfaces. There will be two implementation classes to imply the interface.
+    Game only needs to create an object of the implementation class and then use the function.
+    */
+
     public static class Game
     {
         static public int numCellsX = 4;
@@ -25,6 +31,7 @@ namespace ZooKeeper_Blazor
 
         static public void SetUpGame()
         {
+            //Creating the object of ZoneManager
             ZoneManager zoneManager = new ZoneManager();
             for (var y = 0; y < numCellsY; y++)
             {
@@ -41,6 +48,7 @@ namespace ZooKeeper_Blazor
 
         static public void ZoneClick(Zone clickedZone)
         {
+            //Creating the object of ZoneManager and ScoreCalculator
             ScoreCalculator scoreCalculator = new ScoreCalculator();
             ZoneManager zoneManager = new ZoneManager();
             Console.Write("Got animal ");
@@ -58,7 +66,6 @@ namespace ZooKeeper_Blazor
                 clickedZone.occupant = null;
                 ActivateAnimals();
                 totalScore = scoreCalculator.CalculateTotalScore(animalZones);
-
                 zoneManager.AddZoneWhenFull();//Adding new zone should be excute after all animals finished their actions
                 if (zoneManager.IsWin())
                 {
@@ -76,7 +83,6 @@ namespace ZooKeeper_Blazor
                 Console.WriteLine("Empty spot now holds: " + clickedZone.emoji);
                 ActivateAnimals();
                 totalScore = scoreCalculator.CalculateTotalScore(animalZones);
-
                 zoneManager.AddZoneWhenFull();//Adding new zone should be excute after all animals finished their actions
                 if (zoneManager.IsWin())
                 {

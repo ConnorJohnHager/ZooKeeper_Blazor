@@ -1,7 +1,8 @@
 ﻿using System;
 namespace ZooKeeper_Blazor 
 {
-	public class ScoreCalculator : IScoreCalculator
+    //Definding ScoreCalculator implements
+    public class ScoreCalculator : IScoreCalculator
     {
         public int CalculateTotalScore(List<List<Zone>> animalZones)
         {
@@ -28,6 +29,7 @@ namespace ZooKeeper_Blazor
             return totalScore;
         }
 
+        //This function is counting how many species are stay in the current zone
         public int CountSpecies(List<List<Zone>> animalZones)
         {
             List<string> animalTypeInCurrentZones = new List<string>();
@@ -46,11 +48,13 @@ namespace ZooKeeper_Blazor
             return animalTypeInCurrentZones.Count;
         }
 
+        //This function is to find in the current zone, which specie's number is the smallest
         public int FindTheLeastOne(List<List<Zone>> animalZones)
         {
-            int currrentType;
 
             int[] numberOfEachType = new int[4];
+
+            //recurring the current zone, counting the number of each specie's amount
             for (int i = 0; i < animalZones.Count; i++)
             {
                 for (int j = 0; j < animalZones[i].Count; j++)
@@ -78,36 +82,18 @@ namespace ZooKeeper_Blazor
                 }
             }
 
-            currrentType = CountSpecies(animalZones);
+            //Filtering all values that equals zero
+            var nonZeroValues = numberOfEachType.Where(val => val != 0).ToArray();
 
-            Array.Sort(numberOfEachType);
-
-            if (currrentType == 0)
-            {
-                return 0;
-            }
-            else if (currrentType == 1)
-            {
-                return numberOfEachType[3];
-            }
-            else if (currrentType == 2)
-            {
-                return numberOfEachType[2];
-            }
-            else if (currrentType == 3)
-            {
-                return numberOfEachType[1];
-            }
-            else
-            {
-                return numberOfEachType[0];
-            }
+            //Return the minimum value after filtering
+            return nonZeroValues.Min();
 
         }
 
+        //This function is to find in the current zone, which specie's number is the biggest 
         public int FindTheMostOne(List<List<Zone>> animalZones)
         {
-
+            //recurring the current zone, counting the number of each specie's amount
             int[] numberOfEachType = new int[4];
             for (int i = 0; i < animalZones.Count; i++)
             {
@@ -138,6 +124,7 @@ namespace ZooKeeper_Blazor
 
             Array.Sort(numberOfEachType);
 
+            //After sorted the whole arrat, the last one of the array will be the biggest number
             return numberOfEachType[3];
         }
     }

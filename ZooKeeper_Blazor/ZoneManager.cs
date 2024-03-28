@@ -1,9 +1,10 @@
 ﻿using System;
 using ZooKeeper_Blazor;
 
+//Definding ZoneManager implements
 public class ZoneManager :  IZoneManager
 {
-    
+    //This function is to add new zone when the current zone is full.
     public void AddZoneWhenFull()
     {
         //recurring the current zone, if any of the zone is empty, which means that it is not full of animal, return
@@ -20,6 +21,7 @@ public class ZoneManager :  IZoneManager
             }
         }
 
+        //add zone based on the direction index
         switch (Game.directionIndex)
         {
             case 1:
@@ -45,9 +47,6 @@ public class ZoneManager :  IZoneManager
             default:
                 break;
         }
-
-        //After add the new zone, 
-        CreateRandomDirection();
     }
 
     public void AddZones(Direction d)
@@ -83,13 +82,14 @@ public class ZoneManager :  IZoneManager
         //X left and right Y up and down
         if (Game.numCellsY < Game.maxCellsY && Game.numCellsX < Game.maxCellsX)
         {
+            //Since Next method will not creat its maxvalue, so the max value should be 5, not 4
             Game.directionIndex = randomIndex.Next(1, 5);
         }
-        else if (Game.numCellsX >= Game.maxCellsX && Game.numCellsY < Game.maxCellsY)
+        else if (Game.numCellsX >= Game.maxCellsX && Game.numCellsY < Game.maxCellsY)//If X is full, only create up and down
         {
             Game.directionIndex = randomIndex.Next(1, 3);
         }
-        else if (Game.numCellsX < Game.maxCellsX && Game.numCellsY >= Game.maxCellsY)
+        else if (Game.numCellsX < Game.maxCellsX && Game.numCellsY >= Game.maxCellsY)//If Y is full, only create left and right
         {
             Game.directionIndex = randomIndex.Next(3, 5);
         }
@@ -120,6 +120,7 @@ public class ZoneManager :  IZoneManager
         }
     }
 
+    //This function is to judge whether player reach the goal, fulfill the entire zone
     public bool IsWin()
     {
         if (Game.numCellsX >= Game.maxCellsX && Game.numCellsY >= Game.maxCellsY)
