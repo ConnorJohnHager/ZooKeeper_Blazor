@@ -45,6 +45,9 @@ public class ZoneManager :  IZoneManager
             default:
                 break;
         }
+
+        //After add the new zone, 
+        CreateRandomDirection();
     }
 
     public void AddZones(Direction d)
@@ -74,46 +77,45 @@ public class ZoneManager :  IZoneManager
         }
     }
 
-    public string CreateRandomDirection()
+    public void CreateRandomDirection()
     {
         Random randomIndex = new Random();
-        string direction;
         //X left and right Y up and down
         if (Game.numCellsY < Game.maxCellsY && Game.numCellsX < Game.maxCellsX)
         {
-            Game.directionIndex = randomIndex.Next(1, 4);
+            Game.directionIndex = randomIndex.Next(1, 5);
         }
-        else if (Game.numCellsX >= Game.maxCellsX && Game.numCellsY <= Game.maxCellsY)
+        else if (Game.numCellsX >= Game.maxCellsX && Game.numCellsY < Game.maxCellsY)
         {
-            Game.directionIndex = randomIndex.Next(1, 2);
+            Game.directionIndex = randomIndex.Next(1, 3);
         }
         else if (Game.numCellsX < Game.maxCellsX && Game.numCellsY >= Game.maxCellsY)
         {
-            Game.directionIndex = randomIndex.Next(3, 4);
+            Game.directionIndex = randomIndex.Next(3, 5);
         }
 
-
+        //After crated direction, modify direction's value
         switch (Game.directionIndex)
         {
             case 1:
-                direction = "UP";
-                return direction;
+                Game.direction = "UP";
+                return ;
                 
             case 2:
-                direction = "DOWN";
-                return direction;
+                Game.direction = "DOWN";
+                return ;
                 
             case 3:
-                direction = "LEFT";
-                return direction;
+                Game.direction = "LEFT";
+                return;
                 
             case 4:
-                direction = "RIGHT";
-                return direction;
+                Game.direction = "RIGHT";
+                return ;
                 
             default:
-                direction = "NULL(Reached Maximum)";
-                return direction;
+                Game.direction = "NULL(Reached Maximum)";
+                return;
                 
         }
     }

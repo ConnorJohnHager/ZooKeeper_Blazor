@@ -5,6 +5,6 @@ public interface IZoneManager
 {
     void AddZoneWhenFull();
     void AddZones(Direction d);
-    string CreateRandomDirection();
+    void CreateRandomDirection();
     bool IsWin();
 }

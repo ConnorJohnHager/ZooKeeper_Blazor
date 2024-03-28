@@ -34,7 +34,7 @@ namespace ZooKeeper_Blazor
                 animalZones.Add(rowList);
             }
             //At the beginning of the game create a random direction
-            direction = zoneManager.CreateRandomDirection();
+            zoneManager.CreateRandomDirection();
         }
 
        //Since there is no need to add zones manually, so addzone will be deleted
