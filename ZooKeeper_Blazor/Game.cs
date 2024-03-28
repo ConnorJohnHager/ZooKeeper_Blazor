@@ -301,50 +301,6 @@ namespace ZooKeeper_Blazor
             return false; // nothing to hunt
         }
 
-        static public bool Retreat(Animal runner, Direction d, int distance)
-        {
-            Console.WriteLine($"{runner.name} is retreating {d.ToString()}");
-            int x = runner.location.x;
-            int y = runner.location.y;
-
-            switch (d)
-            {
-                case Direction.up:
-                    if (y > 0 && animalZones[y - distance][x].occupant == null)
-                    {
-                        animalZones[y - distance][x].occupant = runner;
-                        animalZones[y][x].occupant = null;
-                        return true; // retreat was successful
-                    }
-                    return false; // retreat was not successful
-                case Direction.down:
-                    if (y < numCellsY && animalZones[y + distance][x].occupant == null)
-                    {
-                        animalZones[y + distance][x].occupant = runner;
-                        animalZones[y][x].occupant = null;
-                        return true; // retreat was successful
-                    }
-                    return false;
-                case Direction.left:
-                    if (x > 0 && animalZones[y][x - distance].occupant == null)
-                    {
-                        animalZones[y][x - distance].occupant = runner;
-                        animalZones[y][x].occupant = null;
-                        return true; // retreat was successful
-                    }
-                    return false;
-                case Direction.right:
-                    if (x < numCellsX && animalZones[y][x + distance].occupant == null)
-                    {
-                        animalZones[y][x + distance].occupant = runner;
-                        animalZones[y][x].occupant = null;
-                        return true; // retreat was successful
-                    }
-                    return false;
-            }
-            return false; // cannot retreat
-        }
-
         // from Valentina
         static public int SeekForMouse(int x, int y, Direction d, string target, int distance)
         {

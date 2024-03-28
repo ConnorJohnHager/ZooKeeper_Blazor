@@ -4,89 +4,47 @@ namespace ZooKeeper_Blazor
 {
 	public interface IPrey
 	{
+        // from Connor, based on code from Valentina
         public bool Flee(Animal prey, int x, int y, string predator, int distance)
         {
-            if (Game.Seek(x, y, Direction.up, predator, 1))
+            Random random = new Random();
+            List<Direction> possibleDirections = new List<Direction> {Direction.up, Direction.down, Direction.left, Direction.right};
+
+            if (!Game.Seek(x, y, Direction.up, predator, 1))
             {
-                if (Game.Seek(x, y, Direction.up, "null", 1)) // check all directions for fleeing
-                {
-                    if (Game.Move(prey, Direction.up, distance) > 0) return true;
-                }
-                if (Game.Seek(x, y, Direction.down, "null", 1))
-                {
-                    if (Game.Move(prey, Direction.down, distance) > 0) return true;
-                }
-                if (Game.Seek(x, y, Direction.left, "null", 1))
-                {
-                    if (Game.Move(prey, Direction.left, distance) > 0) return true;
-                }
-                if (Game.Seek(x, y, Direction.right, "null", 1))
-                {
-                    if (Game.Move(prey, Direction.right, distance) > 0) return true;
-                }
-                return false; // can't run
+                possibleDirections.Remove(Direction.up);
             }
-            if (Game.Seek(x, y, Direction.down, predator, 1))
+            if (!Game.Seek(x, y, Direction.down, predator, 1))
             {
-                if (Game.Seek(x, y, Direction.up, "null", 1)) // check all directions for fleeing
-                {
-                    if (Game.Move(prey, Direction.up, distance) > 0) return true;
-                }
-                if (Game.Seek(x, y, Direction.down, "null", 1))
-                {
-                    if (Game.Move(prey, Direction.down, distance) > 0) return true;
-                }
-                if (Game.Seek(x, y, Direction.left, "null", 1))
-                {
-                    if (Game.Move(prey, Direction.left, distance) > 0) return true;
-                }
-                if (Game.Seek(x, y, Direction.right, "null", 1))
-                {
-                    if (Game.Move(prey, Direction.right, distance) > 0) return true;
-                }
-                return false; // can't run
+                possibleDirections.Remove(Direction.down);
             }
-            if (Game.Seek(x, y, Direction.left, predator, 1))
+            if (!Game.Seek(x, y, Direction.left, predator, 1))
             {
-                if (Game.Seek(x, y, Direction.up, "null", 1)) // check all directions for fleeing
-                {
-                    if (Game.Move(prey, Direction.up, distance) > 0) return true;
-                }
-                if (Game.Seek(x, y, Direction.down, "null", 1))
-                {
-                    if (Game.Move(prey, Direction.down, distance) > 0) return true;
-                }
-                if (Game.Seek(x, y, Direction.left, "null", 1))
-                {
-                    if (Game.Move(prey, Direction.left, distance) > 0) return true;
-                }
-                if (Game.Seek(x, y, Direction.right, "null", 1))
-                {
-                    if (Game.Move(prey, Direction.right, distance) > 0) return true;
-                }
-                return false; // can't run
+                possibleDirections.Remove(Direction.right);
             }
-            if (Game.Seek(x, y, Direction.right, predator, 1))
+            if (!Game.Seek(x, y, Direction.right, predator, 1))
             {
-                if (Game.Seek(x, y, Direction.up, "null", 1)) // check all directions for fleeing
-                {
-                    if (Game.Move(prey, Direction.up, distance) > 0) return true;
-                }
-                if (Game.Seek(x, y, Direction.down, "null", 1))
-                {
-                    if (Game.Move(prey, Direction.down, distance) > 0) return true;
-                }
-                if (Game.Seek(x, y, Direction.left, "null", 1))
-                {
-                    if (Game.Move(prey, Direction.left, distance) > 0) return true;
-                }
-                if (Game.Seek(x, y, Direction.right, "null", 1))
-                {
-                    if (Game.Move(prey, Direction.right, distance) > 0) return true;
-                }
-                return false; // can't run
+                possibleDirections.Remove(Direction.left);
             }
-            return false; // nothing to flee
+
+            for ( int i = distance; i < 1; i++)
+            {
+                foreach (Direction direction in possibleDirections)
+                {
+                    if(!Game.Seek(x, y, direction, "null", distance))
+                    {
+                        possibleDirections.Remove(direction);
+                    }
+                }
+            }
+
+            if (possibleDirections.Count > 0)
+            {
+                Direction moveDirection = possibleDirections[random.Next(possibleDirections.Count)];
+
+                if (Game.Move(prey, moveDirection, distance) > 0) return true;
+            }
+            return false;
         }
     }
 }

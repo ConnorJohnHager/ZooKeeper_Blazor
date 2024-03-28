@@ -22,7 +22,7 @@ namespace ZooKeeper_Blazor
         public bool Walkabout(int x, int y) // check all directions for animal to wander around the board
         {
             Random random = new Random();
-            List<Direction> possibleDirections = new List<Direction> { Direction.up, Direction.down, Direction.left, Direction.right};
+            List<Direction> possibleDirections = new List<Direction> {Direction.up, Direction.down, Direction.left, Direction.right};
 
             if (!Game.Seek(x, y, Direction.up, "null", 1))
             {

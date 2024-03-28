@@ -4,26 +4,36 @@ namespace ZooKeeper_Blazor
 {
 	public class Bird : Animal
 	{
-        // from Connor
+        // from Connor, based on code from Valentina
         public bool Fly(Bird bird, int x, int y, int distance)
         {
-            if (Game.Seek(x, y, Direction.up, "null", distance))
+            Random random = new Random();
+            List<Direction> possibleDirections = new List<Direction> {Direction.up, Direction.down, Direction.left, Direction.right};
+
+            if (!Game.Seek(x, y, Direction.up, "null", distance))
             {
-                if (Game.Retreat(bird, Direction.up, distance)) return true;
+                possibleDirections.Remove(Direction.up);
             }
-            else if (Game.Seek(x, y, Direction.down, "null", distance))
+            if (!Game.Seek(x, y, Direction.down, "null", distance))
             {
-                if (Game.Retreat(bird, Direction.down, distance)) return true;
+                possibleDirections.Remove(Direction.down);
             }
-            else if (Game.Seek(x, y, Direction.left, "null", distance))
+            if (!Game.Seek(x, y, Direction.left, "null", distance))
             {
-                if (Game.Retreat(bird, Direction.left, distance)) return true;
+                possibleDirections.Remove(Direction.right);
             }
-            else if (Game.Seek(x, y, Direction.right, "null", distance))
+            if (!Game.Seek(x, y, Direction.right, "null", distance))
             {
-                if (Game.Retreat(bird, Direction.right, distance)) return true;
+                possibleDirections.Remove(Direction.left);
             }
-            return false; // nowhere to fly
+
+            if (possibleDirections.Count > 0)
+            {
+                Direction moveDirection = possibleDirections[random.Next(possibleDirections.Count)];
+
+                if (Game.Move(bird, moveDirection, distance) > 0) return true;
+            }
+            return false;
         }
     }
 }
