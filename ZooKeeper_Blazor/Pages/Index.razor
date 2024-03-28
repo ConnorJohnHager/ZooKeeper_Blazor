@@ -19,16 +19,108 @@
         }
 </style>
 
-<div class="container">
+<div class="container" style="font-size: 12px">
 
     <div class="row">
-        <div class="col-6">
-            <h1 style="text-align:end">Next Direction:@direction</h1>
+        <h1>Welcome to <span style="color: darkgreen"<b><i>Zookeeper</i></b></span></h1>
 
-            @code
-            {
-                string direction => Game.direction;
-            }
+        <h5><b>Goal</b>: Fill up the board to unlock more space while scoring as many points as possible!</h5>
+
+        <p><b>Feeding rules:</b></p>
+        <ul style="padding-left: 50px">
+            <li>Cats can eat chicks, mice, or roosters, but will try to run away from raptors</li>
+            <li>Mice can eat grass, but will try to run away from cats and raptors</li>
+            <li>Chicks can eat grass, but will try to run away from cats</li>
+            <li>Raptors can eat cats or mice</li>
+            <li>Roosters can eat grass, but will try to run away from cats</li>
+            <li>Vultures can eat corpses</li>
+        </ul>
+
+        <p><b>Other rules:</b></p>
+        <ul style="padding-left: 50px">
+            <li>If mice are near a predator and are fast enough to flee, they will try to move up to two spaces away</li>
+            <li>If there is nothing to eat, raptors and vultures will fly two spaces away in a random direction as long as one of the spaces is empty</li>
+            <li>If any animal goes a turn without being eaten, eating, fleeing, or flying, then it will try to move to a nearby empty space as long as one of the spaces is empty</li>
+            <li>If a chick lasts on the board for three turns, it will randomly grow up into a raptor, rooster, or vulture</li>
+            <li>If a corpse lasts on the board for three turns, it will turn into a patch of grass</li>
+            <li>All animals have five turns to eat their next meal and will turn into a corpse if they don't eat in time</li>
+            <li>Fill up all available spaces to unlock a new row or column to the grid (max: 10x10)</li>
+        </ul>
+
+    </div>
+
+    <div class="row">
+        <div class="col">
+            <hr />
+        </div>
+    </div>
+
+    <div class="row">
+        <h3 style="text-align: center">Add Animal or Object to Holding:</h3>
+    </div>
+
+    <div class="row" style="justify-content: center">
+        <div class="col-1">
+            <button @onclick="@(() => Game.AddToHolding("cat"))"
+                    type="button" class="sm btn btn-outline-dark">
+                <h2>🐱</h2>
+            </button>
+        </div>
+        <div class="col-1">
+            <button @onclick="@(() => Game.AddToHolding("mouse"))"
+                    type="button" class="sm btn btn-outline-dark">
+                <h2>🐭</h2>
+            </button>
+        </div>
+        <div class="col-1">
+            <button @onclick="@(() => Game.AddToHolding("chick"))"
+                    type="button" class="sm btn btn-outline-dark">
+                <h2>🐥</h2>
+            </button>
+        </div>
+        <div class="col-1">
+            <button @onclick="@(() => Game.AddToHolding("raptor"))"
+                    type="button" class="sm btn btn-outline-dark">
+                <h2>🦅</h2>
+            </button>
+        </div>
+        <div class="col-1">
+            <button @onclick="@(() => Game.AddToHolding("rooster"))"
+                    type="button" class="sm btn btn-outline-dark">
+                <h2> 🐓</h2>
+            </button>
+        </div>
+        <div class="col-1">
+            <button @onclick="@(() => Game.AddToHolding("vulture"))"
+                    type="button" class="sm btn btn-outline-dark">
+                <h2>🐦‍⬛</h2>
+            </button>
+        </div>
+        <div class="col-1">
+            <button @onclick="@(() => Game.AddToHolding("grass"))"
+                    type="button" class="sm btn btn-outline-dark">
+                <h2>🌾</h2>
+            </button>
+        </div>
+        <div class="col-1">
+            <button @onclick="@(() => Game.AddToHolding("corpse"))"
+                    type="button" class="sm btn btn-outline-dark">
+                <h2>💀</h2>
+            </button>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <hr />
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-6">
+            <h3 style="text-align:end">Holding Pen:</h3>
+        </div><div class="col-6">
+            <button disabled type="button" class="btn btn-outline-dark">
+                <h2>@Game.holdingPen.emoji<sup>@Game.holdingPen.rtLabel</sup></h2>
+            </button>
         </div>
     </div>
 
@@ -38,118 +130,37 @@
         </div>
     </div>
 
-
     <div class="row">
-        <div class="col-6">
-            <h1 style="text-align:end">Score :@totalScore</h1>
+        <h1>Score : @totalScore</h1>
 
-            @code
-            {
-                string totalScore => Game.totalScore.ToString();
-            }
-        </div>
+        @code
+        {
+            string totalScore => Game.totalScore.ToString();
+        }
     </div>
 
     <div class="row">
         <div class="col">
-            <hr />
+            <table align="center">
+                @for (var y = 0; y < Game.numCellsY; y++)
+                {
+                    <tr>
+                        @for (var x = 0; x < Game.numCellsX; x++)
+                        {
+                            var a = Game.animalZones[y][x];
+                            <td>
+                                <button @onclick="@(() => Game.ZoneClick(a))"
+                                        type="button" class="btn btn-outline-dark">
+                                    <h2>@a.emoji<sup>@a.rtLabel</sup></h2>
+                                </button>
+                            </td>
+                        }
+                    </tr>
+                }
+            </table>
         </div>
     </div>
-
-    <div class="row">
-        <div class="col-6">
-            <h1 style="text-align:end">Add Animal to Holding:</h1>
-        </div>
-            <div class="col-1">
-                <button @onclick="@(() => Game.AddToHolding("cat"))"
-                        type="button" class="sm btn btn-outline-dark">
-                    <h2>🐱</h2>
-                </button>
-            </div>
-            <div class="col-1">
-                <button @onclick="@(() => Game.AddToHolding("mouse"))"
-                        type="button" class="sm btn btn-outline-dark">
-                    <h2>🐭</h2>
-                </button>
-            </div>
-            <div class="col-1">
-                <button @onclick="@(() => Game.AddToHolding("chick"))"
-                        type="button" class="sm btn btn-outline-dark">
-                    <h2>🐥</h2>
-                </button>
-            </div>
-            <div class="col-1">
-                <button @onclick="@(() => Game.AddToHolding("raptor"))"
-                        type="button" class="sm btn btn-outline-dark">
-                    <h2>🦅</h2>
-                </button>
-            </div>
-            <div class="col-1">
-                <button @onclick="@(() => Game.AddToHolding("rooster"))"
-                        type="button" class="sm btn btn-outline-dark">
-                    <h2> 🐓</h2>
-                </button>
-            </div>
-            <div class="col-1">
-                <button @onclick="@(() => Game.AddToHolding("vulture"))"
-                        type="button" class="sm btn btn-outline-dark">
-                    <h2>🐦‍⬛</h2>
-                </button>
-            </div>
-            <div class="col-1">
-                <button @onclick="@(() => Game.AddToHolding("grass"))"
-                        type="button" class="sm btn btn-outline-dark">
-                    <h2>🌾</h2>
-                </button>
-            </div>
-            <div class="col-1">
-                <button @onclick="@(() => Game.AddToHolding("corpse"))"
-                        type="button" class="sm btn btn-outline-dark">
-                    <h2>💀</h2>
-                </button>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col">
-                <hr />
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-6">
-                <h1 style="text-align:end">Holding Pen:</h1>
-            </div><div class="col-6">
-                <button disabled type="button" class="btn btn-outline-dark">
-                    <h2>@Game.holdingPen.emoji<sup>@Game.holdingPen.rtLabel</sup></h2>
-                </button>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col">
-                <hr />
-            </div>
-        </div>
-        <div class="row">
-            <div class="col">
-                <table align="center">
-                    @for (var y = 0; y < Game.numCellsY; y++)
-                    {
-                        <tr>
-                            @for (var x = 0; x < Game.numCellsX; x++)
-                            {
-                                var a = Game.animalZones[y][x];
-                                <td>
-                                    <button @onclick="@(() => Game.ZoneClick(a))"
-                                            type="button" class="btn btn-outline-dark">
-                                        <h2>@a.emoji<sup>@a.rtLabel</sup></h2>
-                                    </button>
-                                </td>
-                            }
-                        </tr>
-                    }
-                </table>
-            </div>
-        </div>
-    </div>
+</div>
 
 @code {
     protected override void OnInitialized()
