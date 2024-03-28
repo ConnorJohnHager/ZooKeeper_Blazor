@@ -10,7 +10,7 @@ namespace ZooKeeper_Blazor
         public bool TaskCheck;
         public bool TurnCheck;
         
-        public int turnsForHunting = 6; // default turns given for hunting food
+        public int turnsForHunting = 6; // default turns given for hunting food (five turns but adjusted for processing)
         public int turnsSinceLastHunt { get; set; } = 1; // tracks the non-eating turns, starting with 1 for processing
 
         virtual public void Activate()
@@ -18,6 +18,7 @@ namespace ZooKeeper_Blazor
             Console.WriteLine($"Animal {name} at {location.x},{location.y} activated");
         }
 
+        // from Connor, based on code from Valentina
         public bool Walkabout(int x, int y) // check all directions for animal to wander around the board
         {
             Random random = new Random();
@@ -49,6 +50,7 @@ namespace ZooKeeper_Blazor
             return false;
         }
 
+        // Original code by Menglin, updated by Connor
         public bool CheckForMaturity(Animal animal, int adulthood) // check if an animal is old enough to grow up or reproduce
         {
             if (animal.age == adulthood)
@@ -61,6 +63,7 @@ namespace ZooKeeper_Blazor
             }
         }
 
+        // Original code by Menglin, updated by Connor
         public bool CheckForDeath(Animal animal) // check if animal hasn't eaten within the required amount of turns
         {
             if (animal.turnsSinceLastHunt == animal.turnsForHunting)

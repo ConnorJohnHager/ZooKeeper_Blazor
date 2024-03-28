@@ -19,6 +19,7 @@ namespace ZooKeeper_Blazor
             TaskProcess();
         }
 
+        // from Connor
         public void TaskProcess() // Priority is to flee over hunt over walkabout
         {
             TaskCheck = (this as IPrey).Flee(this, location.x, location.y, "raptor", 2);
@@ -39,6 +40,7 @@ namespace ZooKeeper_Blazor
                 }
             }
 
+            // Original code by Menglin, updated by Connor
             TaskCheck = CheckForDeath(this); // Check if the animal has eaten within the required number of turns or has died
             if (TaskCheck == true)
             {

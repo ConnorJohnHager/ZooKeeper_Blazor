@@ -20,6 +20,7 @@ namespace ZooKeeper_Blazor
             TaskProcess();
         }
 
+        // from Connor
         public void TaskProcess() // Priority is to flee over hunt over walkabout
         {
             TaskCheck = TotalFlee(location.x, location.y, "raptor");
@@ -36,6 +37,7 @@ namespace ZooKeeper_Blazor
                 }
             }
 
+            // Original code by Menglin, updated by Connor
             TaskCheck = CheckForDeath(this); // Check if the animal has eaten within the required number of turns or has died
             if (TaskCheck == true)
             {
@@ -50,7 +52,7 @@ namespace ZooKeeper_Blazor
 
 
 
-        //From Valentina
+        // from Valentina
         public Direction Flee(int x, int y, string predator)
         {
             Random random = new Random();
@@ -89,6 +91,7 @@ namespace ZooKeeper_Blazor
             }
         }
 
+        // from Valentina
         public bool TotalFlee(int x, int y, string predator)
         {
             // make the first move

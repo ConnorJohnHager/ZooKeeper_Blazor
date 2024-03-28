@@ -1,7 +1,8 @@
 ﻿using System;
 namespace ZooKeeper_Blazor
 {
-	public class Corpse : Occupant
+    // from Menglin
+    public class Corpse : Occupant
 	{
         public int turnsRemaining = 3;
 

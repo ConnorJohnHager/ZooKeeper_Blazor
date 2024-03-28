@@ -4,8 +4,6 @@ namespace ZooKeeper_Blazor
 {
 	public interface IPrey
 	{
-        // i'm not sure if your Flee() method is necessary for your part,
-        // i'll just put my methods about flee below your code in this file
         public bool Flee(Animal prey, int x, int y, string predator, int distance)
         {
             if (Game.Seek(x, y, Direction.up, predator, 1))

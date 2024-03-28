@@ -1,6 +1,7 @@
 ﻿using System;
 namespace ZooKeeper_Blazor
 {
+    // from Menglin
 	public class Occupant
 	{
         public string emoji;

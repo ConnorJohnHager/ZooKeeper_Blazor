@@ -1,6 +1,7 @@
 ﻿using System;
 namespace ZooKeeper_Blazor 
 {
+    // from Sunny
 	public class ScoreCalculator : IScoreCalculator
     {
         public int CalculateTotalScore(List<List<Zone>> animalZones)

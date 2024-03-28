@@ -4,6 +4,7 @@ namespace ZooKeeper_Blazor
 {
 	public class Bird : Animal
 	{
+        // from Connor
         public bool Fly(Bird bird, int x, int y, int distance)
         {
             if (Game.Seek(x, y, Direction.up, "null", distance))
