@@ -160,6 +160,7 @@ namespace ZooKeeper_Blazor
             }
         }
 
+        // updated by Connor
         static public bool Seek(int x, int y, Direction d, string target, int distance)
         {
             if (target == "null") // Searching for an empty spot
@@ -209,6 +210,7 @@ namespace ZooKeeper_Blazor
             return false;
         }
 
+        // Original code from Valentina, updated by Connor
         static public int Move(Animal animal, Direction d, int distance)
         {
             int movedDistance = 0;
@@ -247,12 +249,14 @@ namespace ZooKeeper_Blazor
             return movedDistance;
         }
 
+        // from Connor
         static public void Replace(int x, int y, Occupant newOccupant)
         {
             var zone = animalZones[y][x];
             zone.occupant = newOccupant;
         }
 
+        // updated by Connor
         static public bool Attack(Animal attacker, Direction d)
         {
             Console.WriteLine($"{attacker.name} is attacking {d.ToString()}");
@@ -341,6 +345,7 @@ namespace ZooKeeper_Blazor
             return false; // cannot retreat
         }
 
+        // from Valentina
         static public int SeekForMouse(int x, int y, Direction d, string target, int distance)
         {
             int squaresToNearest = 0;
