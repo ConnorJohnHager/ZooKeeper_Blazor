@@ -29,6 +29,7 @@ namespace ZooKeeper_Blazor
             return totalScore;
         }
 
+        //This function is counting how many species are stay in the current zone
         public int CountSpecies(List<List<Zone>> animalZones)
         {
             List<string> animalTypeInCurrentZones = new List<string>();
@@ -47,6 +48,7 @@ namespace ZooKeeper_Blazor
             return animalTypeInCurrentZones.Count;
         }
 
+        //This function is to find in the current zone, which specie's number is the smallest
         public int FindTheLeastOne(List<List<Zone>> animalZones)
         {
             int currrentType;

@@ -20,6 +20,7 @@ public class ZoneManager :  IZoneManager
             }
         }
 
+        //add zone based on the direction index
         switch (Game.directionIndex)
         {
             case 1:
@@ -81,18 +82,18 @@ public class ZoneManager :  IZoneManager
         //X left and right Y up and down
         if (Game.numCellsY < Game.maxCellsY && Game.numCellsX < Game.maxCellsX)
         {
-            Game.directionIndex = randomIndex.Next(1, 4);
+            Game.directionIndex = randomIndex.Next(1, 5);
         }
         else if (Game.numCellsX >= Game.maxCellsX && Game.numCellsY <= Game.maxCellsY)
         {
-            Game.directionIndex = randomIndex.Next(1, 2);
+            Game.directionIndex = randomIndex.Next(1, 3);
         }
         else if (Game.numCellsX < Game.maxCellsX && Game.numCellsY >= Game.maxCellsY)
         {
-            Game.directionIndex = randomIndex.Next(3, 4);
+            Game.directionIndex = randomIndex.Next(3, 5);
         }
 
-
+        //After crated direction, modify direction's value
         switch (Game.directionIndex)
         {
             case 1:
