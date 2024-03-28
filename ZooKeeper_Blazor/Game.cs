@@ -99,7 +99,7 @@ namespace ZooKeeper_Blazor
             if (occupantType == "mouse") holdingPen.occupant = new Mouse("Squeaky");
             if (occupantType == "raptor") holdingPen.occupant = new Raptor("Chance the Raptor");
             if (occupantType == "chick") holdingPen.occupant = new Chick("Tweety (uncopyrighted)");
-            if (occupantType == "rooster") holdingPen.occupant = new Rooster("Earl Wings");
+            if (occupantType == "rooster") holdingPen.occupant = new Rooster("Earl");
             if (occupantType == "vulture") holdingPen.occupant = new Vulture("Van Helswing");
             if (occupantType == "grass") holdingPen.occupant = new Grass();
             if (occupantType == "corpse") holdingPen.occupant = new Corpse();
