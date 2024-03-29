@@ -35,11 +35,11 @@ namespace ZooKeeper_Blazor
             }
             if (!Game.Seek(x, y, Direction.left, "null", 1))
             {
-                possibleDirections.Remove(Direction.right);
+                possibleDirections.Remove(Direction.left);
             }
             if (!Game.Seek(x, y, Direction.right, "null", 1))
             {
-                possibleDirections.Remove(Direction.left);
+                possibleDirections.Remove(Direction.right);
             }
 
             if (possibleDirections.Count > 0)
@@ -78,9 +78,9 @@ namespace ZooKeeper_Blazor
             return false;
         }
 
-        static public void CheckForOffspring(Animal parent, int x, int y, Occupant offspring)
+        static public void CheckForOffspring(Animal parent, int x, int y, Animal offspring)
         {
-            if (parent.betweenOffspring >= 4)
+            if (parent.betweenOffspring >= 3)
             {
                 Random random = new Random();
                 List<Direction> possibleDirections = new List<Direction> { Direction.up, Direction.down, Direction.left, Direction.right };
@@ -95,11 +95,11 @@ namespace ZooKeeper_Blazor
                 }
                 if (!Game.Seek(x, y, Direction.left, "null", 1))
                 {
-                    possibleDirections.Remove(Direction.right);
+                    possibleDirections.Remove(Direction.left);
                 }
                 if (!Game.Seek(x, y, Direction.right, "null", 1))
                 {
-                    possibleDirections.Remove(Direction.left);
+                    possibleDirections.Remove(Direction.right);
                 }
 
                 if (possibleDirections.Count > 0)
@@ -124,6 +124,7 @@ namespace ZooKeeper_Blazor
                     }
                 }
                 parent.betweenOffspring = 0;
+                offspring.TurnCheck = true; // so baby doesn't move the same turn it's born
             }
             else
             {

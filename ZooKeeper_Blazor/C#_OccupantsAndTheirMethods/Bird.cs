@@ -20,11 +20,11 @@ namespace ZooKeeper_Blazor
             }
             if (!Game.Seek(x, y, Direction.left, "null", distance))
             {
-                possibleDirections.Remove(Direction.right);
+                possibleDirections.Remove(Direction.left);
             }
             if (!Game.Seek(x, y, Direction.right, "null", distance))
             {
-                possibleDirections.Remove(Direction.left);
+                possibleDirections.Remove(Direction.right);
             }
 
             if (possibleDirections.Count > 0)
