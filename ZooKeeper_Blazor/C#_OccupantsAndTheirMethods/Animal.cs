@@ -12,6 +12,7 @@ namespace ZooKeeper_Blazor
         
         public int turnsForHunting = 6; // default turns given for hunting food (five turns but adjusted for processing)
         public int turnsSinceLastHunt { get; set; } = 1; // tracks the non-eating turns, starting with 1 for processing
+        public int betweenOffspring = 0;
 
         virtual public void Activate()
         {
@@ -75,6 +76,59 @@ namespace ZooKeeper_Blazor
                 animal.turnsSinceLastHunt++;
             }
             return false;
+        }
+
+        static public void CheckForOffspring(Animal parent, int x, int y, Occupant offspring)
+        {
+            if (parent.betweenOffspring >= 4)
+            {
+                Random random = new Random();
+                List<Direction> possibleDirections = new List<Direction> { Direction.up, Direction.down, Direction.left, Direction.right };
+
+                if (!Game.Seek(x, y, Direction.up, "null", 1))
+                {
+                    possibleDirections.Remove(Direction.up);
+                }
+                if (!Game.Seek(x, y, Direction.down, "null", 1))
+                {
+                    possibleDirections.Remove(Direction.down);
+                }
+                if (!Game.Seek(x, y, Direction.left, "null", 1))
+                {
+                    possibleDirections.Remove(Direction.right);
+                }
+                if (!Game.Seek(x, y, Direction.right, "null", 1))
+                {
+                    possibleDirections.Remove(Direction.left);
+                }
+
+                if (possibleDirections.Count > 0)
+                {
+                    Direction moveDirection = possibleDirections[random.Next(possibleDirections.Count)];
+
+                    if (moveDirection == Direction.up)
+                    {
+                        Game.Replace(x, y - 1, offspring);
+                    }
+                    else if (moveDirection == Direction.down)
+                    {
+                        Game.Replace(x, y + 1, offspring);
+                    }
+                    else if (moveDirection == Direction.left)
+                    {
+                        Game.Replace(x - 1, y, offspring);
+                    }
+                    else if (moveDirection == Direction.right)
+                    {
+                        Game.Replace(x + 1, y, offspring);
+                    }
+                }
+                parent.betweenOffspring = 0;
+            }
+            else
+            {
+                parent.betweenOffspring++;
+            }
         }
     }
 }

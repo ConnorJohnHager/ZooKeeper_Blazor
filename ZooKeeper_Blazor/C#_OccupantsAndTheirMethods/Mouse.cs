@@ -46,6 +46,7 @@ namespace ZooKeeper_Blazor
             else
             {
                 age++;
+                CheckForOffspring(this, location.x, location.y, new Mouse("baby"));
                 TurnCheck = true;
             }
         }
