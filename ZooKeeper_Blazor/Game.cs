@@ -17,6 +17,9 @@ namespace ZooKeeper_Blazor
         static public List<List<Zone>> animalZones = new List<List<Zone>>();
         static public Zone holdingPen = new Zone(-1, -1, null);
         static public int totalScore = 0;
+        static public List<List<Animal>> activationList = new List<List<Animal>>();
+        static public List<Animal> deadAnimal = new List<Animal>();
+        static public Animal animalToAdd = new Animal();
 
         //New attributes, which will be used by ZoneManager
         static public int directionIndex;
@@ -35,6 +38,12 @@ namespace ZooKeeper_Blazor
             }
             //At the beginning of the game create a random direction
             direction = zoneManager.CreateRandomDirection();
+
+            for (var i = 0; i < 10; i++)
+            {
+                activationList.Add(new List<Animal>());//list of List<Animal> with 10 different reaction time
+                Console.WriteLine(activationList);
+            }
         }
 
        //Since there is no need to add zones manually, so addzone will be deleted
@@ -95,89 +104,204 @@ namespace ZooKeeper_Blazor
         {
             ZoneManager zoneManager = new ZoneManager();
             if (holdingPen.occupant != null) return;
-            if (occupantType == "cat") holdingPen.occupant = new Cat("Fluffy");
-            if (occupantType == "mouse") holdingPen.occupant = new Mouse("Squeaky");
-            if (occupantType == "raptor") holdingPen.occupant = new Raptor("Chance the Raptor");
-            if (occupantType == "chick") holdingPen.occupant = new Chick("Tweety (uncopyrighted)");
-            if (occupantType == "rooster") holdingPen.occupant = new Rooster("Earl Wings");
-            if (occupantType == "vulture") holdingPen.occupant = new Vulture("Van Helswing");
+            if (occupantType == "cat")
+            {
+                animalToAdd = new Cat("Fluffy");
+                holdingPen.occupant = animalToAdd;
+                activationList[animalToAdd.reactionTime - 1].Add(animalToAdd);
+                Console.WriteLine(animalToAdd.emoji + "added to list" + (animalToAdd.reactionTime - 1));
+                animalToAdd = null;
+            }
+            if (occupantType == "mouse")
+            {
+                animalToAdd = new Mouse("Squeaky");
+                holdingPen.occupant = animalToAdd;
+                activationList[animalToAdd.reactionTime - 1].Add(animalToAdd);
+                Console.WriteLine(animalToAdd.emoji + "added to list" + (animalToAdd.reactionTime - 1));
+                animalToAdd = null;
+            }
+            if (occupantType == "raptor")
+            {
+                animalToAdd = new Raptor("Chance the Raptor");
+                holdingPen.occupant = animalToAdd;
+                activationList[animalToAdd.reactionTime - 1].Add(animalToAdd);
+                Console.WriteLine(animalToAdd.emoji + "added to list" + (animalToAdd.reactionTime - 1));
+                animalToAdd = null;
+            } 
+            if (occupantType == "chick")
+            {
+                animalToAdd = new Chick("Tweety (uncopyrighted)");
+                holdingPen.occupant = animalToAdd;
+                activationList[animalToAdd.reactionTime - 1].Add(animalToAdd);
+                Console.WriteLine(animalToAdd.emoji + "added to list" + (animalToAdd.reactionTime - 1));
+                animalToAdd = null;
+
+            }
+            if (occupantType == "rooster")
+            {
+                animalToAdd = new Rooster("Earl Wings");
+                holdingPen.occupant = animalToAdd;
+                activationList[animalToAdd.reactionTime - 1].Add(animalToAdd);
+                Console.WriteLine(animalToAdd.emoji + "added to list" + (animalToAdd.reactionTime - 1));
+                animalToAdd = null;
+            }
+            if (occupantType == "vulture")
+            {
+                holdingPen.occupant = new Vulture("Van Helswing");
+                holdingPen.occupant = animalToAdd;
+                activationList[animalToAdd.reactionTime - 1].Add(animalToAdd);
+                Console.WriteLine(animalToAdd.emoji + "added to list" + (animalToAdd.reactionTime - 1));
+                animalToAdd = null;
+            }
             if (occupantType == "grass") holdingPen.occupant = new Grass();
             if (occupantType == "corpse") holdingPen.occupant = new Corpse();
+
+
+
+            Console.WriteLine($"Holding pen occupant at {holdingPen.occupant.location.x},{holdingPen.occupant.location.y}");
             Console.WriteLine($"Holding pen occupant at {holdingPen.occupant.location.x},{holdingPen.occupant.location.y}");
             //ActivateAnimals(); turns only occur when placed on the board now
             zoneManager.AddZoneWhenFull();//Keeping watching whether current is full and then adding new zone
         }
 
+        //static public void ActivateAnimals()
+        //{
+        //    //Going through activations
+        //    for (var r = 1; r < 11; r++) // reaction times from 1 to 10
+        //    {
+        //        for (var y = 0; y < numCellsY; y++)
+        //        {
+        //            for (var x = 0; x < numCellsX; x++)
+        //            {
+        //                var zone = animalZones[y][x];
+        //                if (zone.occupant as Animal != null && ((Animal)zone.occupant).reactionTime == r && ((Animal)zone.occupant).TurnCheck == false)
+        //                {
+        //                    ((Animal)zone.occupant).Activate();
+        //                }
+        //            }
+        //        }
+        //    }
+
+        //    //Going through deaths
+        //    for (var y = 0; y < numCellsY; y++) 
+        //    {
+        //        for (var x = 0; x < numCellsX; x++)
+        //        {
+        //            var zone = animalZones[y][x];
+        //            Animal animal = zone.occupant as Animal;
+        //            if (animal != null && animal.turnsSinceLastHunt > 5)
+        //            {
+        //                zone.occupant = new Corpse();
+        //            }
+        //        }
+        //    }
+
+        //    //Going through chicks maturing into other birds
+        //    for (var y = 0; y < numCellsY; y++)
+        //    {
+        //        for (var x = 0; x < numCellsX; x++)
+        //        {
+        //            var zone = animalZones[y][x];
+        //            Chick chick = zone.occupant as Chick;
+
+        //            if (chick != null && chick.totalTurns > 3) //grow up!!!
+        //            {
+        //                Random random = new Random();
+        //                int choice = random.Next(10);
+        //                if (choice < 2)
+        //                {
+        //                    zone.occupant = new Raptor("raptor");
+        //                }
+        //                else if (choice < 7) // The probability of a rooster is 1 in 2
+        //                {
+        //                    zone.occupant = new Rooster("rooster");
+        //                }
+        //                else // The remaining 1/3 probability is allocated to Vultures
+        //                {
+        //                    zone.occupant = new Vulture("vulture");
+        //                }
+        //            }
+        //        }
+        //    }
+
+        //        //Going through resetting turnchecks
+        //        for (var y = 0; y < numCellsY; y++)
+        //    {
+        //        for (var x = 0; x < numCellsX; x++)
+        //        {
+        //            var zone = animalZones[y][x];
+        //            if (zone.occupant as Animal != null)
+        //            {
+        //                ((Animal)zone.occupant).TurnCheck = false;
+        //            }
+        //        }
+        //    }
+        //}
+
         static public void ActivateAnimals()
         {
-            //Going through activations
-            for (var r = 1; r < 11; r++) // reaction times from 1 to 10
+            for (var r = 0; r < 10; r++)
             {
-                for (var y = 0; y < numCellsY; y++)
-                {
-                    for (var x = 0; x < numCellsX; x++)
-                    {
-                        var zone = animalZones[y][x];
-                        if (zone.occupant as Animal != null && ((Animal)zone.occupant).reactionTime == r && ((Animal)zone.occupant).TurnCheck == false)
-                        {
-                            ((Animal)zone.occupant).Activate();
-                        }
+                foreach (Animal a in activationList[r])
+                {                   
+                    a.Activate();
+                    if (a.turnsSinceLastHunt >5)
+                    {                       
+                        deadAnimal.Add(a);
+                        turnCorpse(a);
                     }
+                    mature(a);          
+
                 }
-            }
 
-            //Going through deaths
-            for (var y = 0; y < numCellsY; y++) 
-            {
-                for (var x = 0; x < numCellsX; x++)
+                foreach (Animal b in deadAnimal)
                 {
-                    var zone = animalZones[y][x];
-                    Animal animal = zone.occupant as Animal;
-                    if (animal != null && animal.turnsSinceLastHunt > 5)
-                    {
-                        zone.occupant = new Corpse();
-                    }
+                    activationList[b.reactionTime - 1].Remove(b);
                 }
+
+                activationList[r].Reverse();
             }
+        }
 
-            //Going through chicks maturing into other birds
-            for (var y = 0; y < numCellsY; y++)
+        static public void turnCorpse(Animal a) //turn an animal into corpse
+        {
+            int x = a.location.x;
+            int y = a.location.y;
+            animalZones[y][x].occupant = new Corpse();
+        }
+
+        static public void mature(Animal a) //chick mature after 3 turns on the filed
+        {
+            Chick chick = a as Chick;
+
+            if (chick != null && chick.totalTurns > 3) //grow up!!! and add new bird to the activationList
             {
-                for (var x = 0; x < numCellsX; x++)
+                deadAnimal.Add(a);//remove old chick from activation list by add it to deadAnimal for removal
+                Random random = new Random();
+                int choice = random.Next(10);
+                if (choice < 2)
                 {
-                    var zone = animalZones[y][x];
-                    Chick chick = zone.occupant as Chick;
-
-                    if (chick != null && chick.totalTurns > 3) //grow up!!!
-                    {
-                        Random random = new Random();
-                        int choice = random.Next(10);
-                        if (choice < 2)
-                        {
-                            zone.occupant = new Raptor("raptor");
-                        }
-                        else if (choice < 7) // The probability of a rooster is 1 in 2
-                        {
-                            zone.occupant = new Rooster("rooster");
-                        }
-                        else // The remaining 1/3 probability is allocated to Vultures
-                        {
-                            zone.occupant = new Vulture("vulture");
-                        }
-                    }
+                    int x = a.location.x;
+                    int y = a.location.y;
+                    Raptor raptor = new Raptor("raptor");
+                    animalZones[y][x].occupant = raptor;
+                    activationList[raptor.reactionTime - 1].Add(raptor);
                 }
-            }
-
-                //Going through resetting turnchecks
-                for (var y = 0; y < numCellsY; y++)
-            {
-                for (var x = 0; x < numCellsX; x++)
+                else if (choice < 7) // The probability of a rooster is 1 in 2
                 {
-                    var zone = animalZones[y][x];
-                    if (zone.occupant as Animal != null)
-                    {
-                        ((Animal)zone.occupant).TurnCheck = false;
-                    }
+                    int x = a.location.x;
+                    int y = a.location.y;
+                    Rooster rooster = new Rooster("rooster");
+                    animalZones[y][x].occupant = rooster;
+                    activationList[rooster.reactionTime - 1].Add(rooster);
+                }
+                else // The remaining 1/3 probability is allocated to Vultures
+                {
+                    int x = a.location.x;
+                    int y = a.location.y;
+                    Vulture vulture = new Vulture("vulture");
+                    animalZones[y][x].occupant = vulture;
+                    activationList[vulture.reactionTime - 1].Add(vulture);
                 }
             }
         }
