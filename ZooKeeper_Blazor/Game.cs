@@ -240,6 +240,7 @@ namespace ZooKeeper_Blazor
 
         static public void ActivateAnimals()
         {
+            deadAnimal.Clear();
             for (var r = 0; r < 10; r++)
             {
                 foreach (Animal a in activationList[r])
